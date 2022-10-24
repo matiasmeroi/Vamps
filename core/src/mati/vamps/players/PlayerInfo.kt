@@ -1,5 +1,7 @@
 package mati.vamps.players
 
+import mati.vamps.Entity
+
 data class PlayerInfo (
     var name: String = "Unnamed",
     var description: String = "Empty Description",
@@ -11,13 +13,20 @@ data class PlayerInfo (
     var pickupRadius: Float = 30f,
     var weaponCooldownMultiplier: Float = 1f,
     var type: PlayerType = PlayerType.NONE,
-    var textureName: String = "None",
 
-    // sprite dimensions
-    var _w: Float = 52f,
-    var _h: Float = 52f,
 
-    // collision rectangle dimensions
-    var _cw: Float = 32f,
-    var _ch: Float = 32f
-)
+    var texture: String = DEFAULT_TEXT,
+    var w: Float = DEF_W,
+    var h: Float = DEF_H,
+    var cw: Float = DEF_CW,
+    var ch: Float = DEF_CH,
+    var cxo: Float = DEF_CXO,
+    var cyo: Float = DEF_CYO
+) : Entity.Info(
+    textureName = texture,
+    _w = w,
+    _h = h,
+    _cw = cw,
+    _ch = ch,
+    _cxo = cxo,
+    _cyo = cyo)
