@@ -2,6 +2,7 @@ package mati.vamps.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -10,12 +11,16 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
+import mati.vamps.CollisionManager
 import mati.vamps.Entity
 import mati.vamps.Utils
 import mati.vamps.Vamps
+import mati.vamps.enemies.EnemyFactory
+import mati.vamps.enemies.EnemyType
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 import mati.vamps.map.Map
+import mati.vamps.particles.BloodParticle
 import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
@@ -29,14 +34,18 @@ class GameScreen : Screen, EventManager.VEventListener {
 
     )
 
-    private val sr = ShapeRenderer()
     private val playerFactory = PlayerFactory()
+    private val enemyFactory = EnemyFactory()
+
+    private val collisionManager = CollisionManager()
+
     private val player: Player
     private val map = Map(mainStage)
     init {
         EventManager.subscribe(this)
 
         playerFactory.load()
+        enemyFactory.load()
 
         player = playerFactory.create(PlayerType.GREG)
         mainStage.addActor(player)
@@ -60,13 +69,24 @@ class GameScreen : Screen, EventManager.VEventListener {
             println("OK")
         }
 
+        if(Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+            val e = enemyFactory.create(EnemyType.BAT_MEDIUM)
+            e.setPosition(stg.x, stg.y)
+            mainStage.addActor(e)
+        }
 
+        collisionManager.run(player, enemyFactory.getList())
 
+        mainStage.act(Gdx.graphics.deltaTime)
         map.update()
 
     }
 
     private fun debugDraw() {
+        if(!Utils.DEBUG) return
+
+        Gdx.graphics.setTitle("Vamps - ${Gdx.graphics.framesPerSecond}")
+
         Vamps.sr().projectionMatrix = mainStage.camera.combined
 
         Vamps.sr().begin(ShapeRenderer.ShapeType.Line)
@@ -122,12 +142,11 @@ class GameScreen : Screen, EventManager.VEventListener {
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
-//            VEvent.PLAYER_MOVED_BY -> {
-//                val p = params.split(EventManager.PARAM_SEP)
-//                val dx = Utils.json.fromJson(Float::class.java, p[0])
-//                val dy = Utils.json.fromJson(Float::class.java, p[1])
-//                mainStage.camera.translate(dx, dy, 0f)
-//            }
+            VEvent.PLAYER_ENEMY_COLLISION -> {
+                val p  = BloodParticle()
+                p.setPosition(player.x, player.y)
+                mainStage.addActor(p)
+            }
         }
     }
 }
