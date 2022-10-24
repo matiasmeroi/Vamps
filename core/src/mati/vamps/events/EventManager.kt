@@ -6,19 +6,19 @@ object EventManager {
 
     const val PARAM_SEP = "::::::::"
 
-    interface GlobalEventListener {
-        fun onGlobalEvent(event: VEvent, params: String)
+    interface VEventListener {
+        fun onVEvent(event: VEvent, params: String)
     }
 
-    private val listeners = Array<GlobalEventListener>()
+    private val listeners = Array<VEventListener>()
 
     fun announce(globalEvent: VEvent, params: String) {
         for(l in listeners) {
-            l.onGlobalEvent(globalEvent, params)
+            l.onVEvent(globalEvent, params)
         }
     }
 
-    fun subscribe(l: GlobalEventListener) {
+    fun subscribe(l: VEventListener) {
         listeners.add(l)
     }
 
