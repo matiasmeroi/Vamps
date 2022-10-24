@@ -3,6 +3,18 @@ atlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+map/bg/bg_molise
+  rotate: false
+  xy: 1, 1
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 players/p1/p1
   rotate: false
   xy: 1, 1

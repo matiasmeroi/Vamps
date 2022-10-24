@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Greg",
+    "description": "Default settings",
+    "type": "GREG",
+    "textureName": "p1/p1",
+    "_w": 52,
+    "_h" : 52,
+    "_cw": 32,
+    "_ch": 32
+  }
+]
