@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.kotcrab.vis.ui.VisUI
 import mati.vamps.Utils.ATLAS_PATH
 import mati.vamps.screens.GameScreen
@@ -15,10 +16,12 @@ import mati.vamps.screens.MenuScreen
 object Vamps : Game() {
 
     private lateinit var batch: SpriteBatch
+    private lateinit var sr: ShapeRenderer
     private lateinit var multiplexer: InputMultiplexer
     private lateinit var assets: AssetManager
 
     fun batch() : SpriteBatch { return batch }
+    fun sr() : ShapeRenderer { return sr }
     fun multiplexer() : InputMultiplexer { return multiplexer }
     fun assets() : AssetManager { return assets }
     fun atlas() : TextureAtlas { return assets.get(ATLAS_PATH, TextureAtlas::class.java) }
@@ -33,6 +36,7 @@ object Vamps : Game() {
 
     override fun create() {
         batch = SpriteBatch()
+        sr = ShapeRenderer()
         multiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = multiplexer
 
