@@ -1,3 +1,9 @@
 [
-
+  {
+    "type": "BAT_MEDIUM",
+    "texture": "enemies/bat",
+    "cw": 36,
+    "ch": 22,
+    "cyo": 8
+  }
 ]
