@@ -22,6 +22,6 @@ class BloodParticle : Actor() {
     override fun draw(batch: Batch?, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
         val n = Utils.r.nextInt(3) + 1
-        batch!!.draw(Vamps.atlas().findRegion("blood/blood3"), x - 22, y - 22)
+        batch!!.draw(Vamps.atlas().findRegion("items/blood3"), x - 22, y - 22)
     }
 }
