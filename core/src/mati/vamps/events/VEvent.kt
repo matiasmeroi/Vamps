@@ -6,7 +6,8 @@ enum class VEvent  {
     PLAYER_MOVED_BY,
     PLAYER_ENEMY_COLLISION,
 
-    ENEMY_KILLED,
-    ENEMY_REMOVED
+    ENEMY_KILLED, // x, y, info
+    ENEMY_REMOVED,
+    ENEMY_HIT // x, y, dmg
 
 }

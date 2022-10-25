@@ -18,9 +18,11 @@ import mati.vamps.Vamps
 import mati.vamps.enemies.EnemyFactory
 import mati.vamps.enemies.EnemyType
 import mati.vamps.events.EventManager
+import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import mati.vamps.map.Map
 import mati.vamps.particles.BloodParticle
+import mati.vamps.particles.DmgParticle
 import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
@@ -141,11 +143,21 @@ class GameScreen : Screen, EventManager.VEventListener {
     }
 
     override fun onVEvent(event: VEvent, params: String) {
+        val j = Utils.json
         when(event) {
             VEvent.PLAYER_ENEMY_COLLISION -> {
                 val p  = BloodParticle()
                 p.setPosition(player.x, player.y)
                 mainStage.addActor(p)
+            }
+            VEvent.ENEMY_HIT -> {
+                val p = params.split(PARAM_SEP)
+                val x = j.fromJson(Int::class.java, p[0])
+                val y = j.fromJson(Int::class.java, p[1])
+                val dmg = j.fromJson(Int::class.java, p[2])
+                val par = DmgParticle(dmg)
+                par.setPosition(x + 0f, y + 15f)
+                mainStage.addActor(par)
             }
         }
     }
