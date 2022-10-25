@@ -1,9 +1,11 @@
 package mati.vamps
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Affine2
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -65,6 +67,12 @@ abstract class Entity: Actor() {
         }
 
         setCollisionOffset(info._cxo, info._cyo)
+
+        onInitialize()
+    }
+
+    open fun onInitialize() {
+
     }
 
     protected fun setCollisionSize(w: Float, h: Float) {
@@ -81,11 +89,11 @@ abstract class Entity: Actor() {
         return Vector2(x, y)
     }
 
-    fun getRect() : Rectangle {
+    open fun getRect() : Rectangle {
         return Rectangle(x - width / 2, y - height / 2, width, height)
     }
 
-    fun getColRect() : Rectangle {
+    open fun getColRect() : Rectangle {
         return Rectangle(x - collisionWidth / 2 + collisionOffsetX, y - collisionHeight / 2 + collisionOffsetY, collisionWidth, collisionHeight)
     }
 
@@ -103,5 +111,20 @@ abstract class Entity: Actor() {
 
     fun drawCentered(batch: Batch?, texture: TextureRegion) {
         batch!!.draw(texture, x - width / 2, y - height / 2, width, height)
+    }
+
+    fun drawCenteredAndScale(batch: Batch?, texture: TextureRegion, scl: Float) {
+        batch!!.draw(texture, x - (width / 2) * scl,
+            y - (height / 2) * scl
+            , width*scl, height*scl)
+    }
+
+    fun drawCenteredAndScale(batch: Batch?, texture: TextureRegion, scl: Float, dir: Vector2) {
+        val rotation = dir.angleDeg()
+        val a = Affine2()
+        a.setToScaling(scl, scl)
+        a.setToRotationRad(rotation)
+        a.setToTranslation(x - width *scl / 2, y - height * scl / 2)
+        batch!!.draw(texture, width, height, a)
     }
 }
