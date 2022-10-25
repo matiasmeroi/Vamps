@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
 import mati.vamps.enemies.Enemy
 import mati.vamps.events.EventManager
+import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import mati.vamps.players.Player
 import com.badlogic.gdx.utils.Array as GdxArray
@@ -18,6 +19,7 @@ class CollisionManager {
     fun run(player: Player, enemyList: GdxArray<Enemy>) {
         separateEnemies(enemyList)
         player2enemy(player, enemyList)
+        weapon2enemy(player, enemyList)
     }
 
 
@@ -63,6 +65,40 @@ class CollisionManager {
             e2.addToAcceleration(-diff.x, -diff.y)
 
             iters--
+        }
+    }
+
+    fun weapon2enemy(player: Player, enemyList: Array<Enemy>) {
+        val j = Utils.json
+        val weapons = player.getWeaponList()
+        val enemyIter = enemyList.iterator()
+
+        for(w in weapons) {
+
+            for(pr in w.getProjectileList()) {
+                enemyIter.reset()
+                while(enemyIter.hasNext()) {
+                    val enemy = enemyIter.next()
+
+                    if(pr.getColRect(w.getAreaMultiplier()).overlaps(enemy.getColRect())) {
+
+                        pr.onEnemyHit(enemy)
+                        val dmg = w.getDmg()
+                        enemy.dealDmg(dmg)
+
+                        EventManager.announce(VEvent.ENEMY_HIT,
+                            j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(dmg))
+
+                        if(enemy.isDead()) {
+                            enemyIter.remove()
+                        }
+
+                    }
+
+                }
+
+            }
+
         }
     }
 
