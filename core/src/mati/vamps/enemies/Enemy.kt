@@ -7,13 +7,14 @@ import mati.vamps.Entity
 import mati.vamps.Utils
 import mati.vamps.Vamps
 import mati.vamps.events.EventManager
+import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import kotlin.math.sin
 
 class Enemy : Entity(), EventManager.VEventListener{
 
     companion object {
-        const val MOVE_SPEED = 2f
+        const val MOVE_SPEED = 1.3f
     }
 
     override fun initialize(i: Info) {
@@ -60,6 +61,25 @@ class Enemy : Entity(), EventManager.VEventListener{
 
     fun getDmgPerFrame() : Float {
         return (info as EnemyInfo).dmgPerFrame
+    }
+
+    fun dealDmg(dmg: Float) {
+        (info as EnemyInfo).health -= dmg
+        if((info as EnemyInfo).health <= 0) {
+            val js = Utils.json
+            val params = js.toJson(x) +
+                        PARAM_SEP +
+                        js.toJson(y) +
+                        PARAM_SEP +
+                        js.toJson(info as EnemyInfo)
+            EventManager.announce(VEvent.ENEMY_KILLED, params)
+
+            remove()
+        }
+    }
+
+    fun isDead() : Boolean {
+        return (info as EnemyInfo).health <= 0
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
