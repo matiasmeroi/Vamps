@@ -1,0 +1,11 @@
+[
+  {
+    "type": "KNIFE",
+    "texture": "items/knife",
+    "speed": 8,
+    "w": 32,
+    "h": 22,
+    "cw": 30,
+    "ch": 14
+  }
+]
