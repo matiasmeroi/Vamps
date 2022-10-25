@@ -85,10 +85,10 @@ class Player : Entity(), EventManager.VEventListener {
     fun drawHealthBar(batch: Batch?) {
         val yoff = height / 2 + healthBarHeight + 3
 
-        batch!!.draw(Vamps.atlas().findRegion("players/health_bar_black"), x - healthBarWidth / 2, y + height / 2 + yoff)
+        batch!!.draw(Vamps.atlas().findRegion("players/health_bar_black"), x - healthBarWidth / 2, y - yoff)
 
         val healthWidth =  healthBarWidth * (health / (info as PlayerInfo).maxHealth)
-        batch!!.draw(Vamps.atlas().findRegion("players/health_bar_red"), x - healthBarWidth / 2, y + height / 2 + yoff, healthWidth, healthBarHeight+0f)
+        batch!!.draw(Vamps.atlas().findRegion("players/health_bar_red"), x - healthBarWidth / 2, y - yoff, healthWidth, healthBarHeight+0f)
     }
 
 
