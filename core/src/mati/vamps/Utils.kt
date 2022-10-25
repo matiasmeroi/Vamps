@@ -10,8 +10,12 @@ object Utils {
     const val DEBUG = true
     const val ATLAS_PATH = "gfx/atlas.atlas"
 
+
     val json = Json()
     val r = Random()
+
+
+    const val DIAG_SPEED_MULTIPLIER = 0.707f
 
 
 }
