@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Event
 import mati.vamps.Entity
@@ -15,18 +17,25 @@ import mati.vamps.enemies.EnemyInfo
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
-import java.util.IllegalFormatWidthException
-
+import mati.vamps.weapons.Knives
+import mati.vamps.weapons.Weapon
+import mati.vamps.weapons.projectiles.ProjectileFactory
+import com.badlogic.gdx.utils.Array as GdxArray
 class Player : Entity(), EventManager.VEventListener {
 
     companion object {
         const val MOVE_SPEED = 3f
-        const val DIAG_SPEED_MULTIPLIER = 0.707f
     }
+
+    // right by default
+    private val dir = Vector2(1f, 0f)
 
     private var health: Float = 0f
     private var healthBarWidth: Int = 0
     private var healthBarHeight: Int = 0
+
+    private var projectileFactory = ProjectileFactory()
+    private var weapons = GdxArray<Weapon>()
 
     override fun initialize(i: Info) {
         super.initialize(i)
@@ -34,7 +43,13 @@ class Player : Entity(), EventManager.VEventListener {
         health = i.maxHealth
         healthBarWidth = Vamps.atlas().findRegion("players/health_bar_black").regionWidth
         healthBarHeight = Vamps.atlas().findRegion("players/health_bar_black").regionHeight
+        projectileFactory.load()
+        weapons.add(Knives(projectileFactory))
         EventManager.subscribe(this)
+    }
+
+    fun getDir() : Vector2 {
+        return dir
     }
 
     fun handleInput() {
@@ -60,17 +75,20 @@ class Player : Entity(), EventManager.VEventListener {
         dy *= (info as PlayerInfo).moveSpeed * MOVE_SPEED
 
         if(dx != 0f && dy != 0f) {
-            dx *= DIAG_SPEED_MULTIPLIER
-            dy *= DIAG_SPEED_MULTIPLIER
+            dx *= Utils.DIAG_SPEED_MULTIPLIER
+            dy *= Utils.DIAG_SPEED_MULTIPLIER
         }
 
        setPosition(x + dx, y + dy)
 
         if(dx != 0f || dy != 0f) {
             EventManager.announce(VEvent.PLAYER_MOVED_BY, "${Utils.json.toJson(dx)}$PARAM_SEP${Utils.json.toJson(dy)}")
+
+            dir.set(Math.signum(dx), Math.signum(dy))
         }
 
-
+        for(w in weapons)
+            w.update(this)
     }
 
     override fun act(delta: Float) {
@@ -96,6 +114,12 @@ class Player : Entity(), EventManager.VEventListener {
         super.draw(batch, parentAlpha)
         drawCentered(batch, texture)
         drawHealthBar(batch)
+
+        for(w in weapons) w.draw(batch!!)
+    }
+
+    fun getWeaponList() : GdxArray<Weapon> {
+        return weapons
     }
 
     override fun onVEvent(event: VEvent, params: String) {
