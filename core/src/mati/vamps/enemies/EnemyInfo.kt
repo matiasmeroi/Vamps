@@ -3,7 +3,7 @@ package mati.vamps.enemies
 import mati.vamps.Entity
 
 data class EnemyInfo (
-        var health: Float = 100f,
+        var health: Float = 1f,
         val moveSpeed: Float = Enemy.MOVE_SPEED,
         var dmgPerFrame: Float = 0.1f,
         var knockback: Float = 1f,
