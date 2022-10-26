@@ -28,7 +28,7 @@ class ThrowableProjectile(val dir: Vector2) : Projectile() {
         timer = 0
     }
 
-    override fun update(areaMultiplier: Float) {
+    override fun onUpdate(areaMultiplier: Float) {
         timer--
         x += velocity.x
         y += velocity.y

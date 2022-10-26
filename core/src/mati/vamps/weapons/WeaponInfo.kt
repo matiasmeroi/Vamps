@@ -27,11 +27,12 @@ class WeaponInfo {
     var minDmg = 1f
     var maxDmg = 1f
 
-    val levelUpEffects = ObjectMap<Int, LevelUpEffect>()
+    val levelUpEffects = ObjectMap<Int, Array<LevelUpEffect>>()
 
     fun levelUp() {
         level++
-        applyEffect(levelUpEffects.get(level))
+        val effects = levelUpEffects.get(level)
+        for(e in effects) applyEffect(e)
     }
 
     private fun applyEffect(effect: LevelUpEffect) {
@@ -54,6 +55,22 @@ class WeaponInfo {
             LevelUpEffect.REDUCE_COOLDOWN_8 ->
                 coolDown *= 0.92f
         }
+    }
+
+    fun getNextLevelDescription() : String {
+        val nextLevel = level + 1
+        if(!(nextLevel in levelUpEffects.keys())) return "Can`t reach level $nextLevel"
+
+        var res = ""
+        val effects = levelUpEffects.get(nextLevel)
+
+        res += effects[0].description
+
+        for(i in 1 until effects.size) {
+            res += " $ ${effects[i].description}"
+        }
+
+        return res
     }
 
 }
