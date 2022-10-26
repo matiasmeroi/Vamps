@@ -9,5 +9,8 @@ enum class VEvent  {
     ENEMY_KILLED, // x, y, info
     ENEMY_REMOVED,
     ENEMY_HIT // x, y, dmg
+    ,
+    ITEM_EFFECT_ACTIVATED,
+    NEXT_LEVEL
 
 }
