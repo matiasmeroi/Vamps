@@ -1,7 +1,6 @@
 package mati.vamps.weapons
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import mati.vamps.Utils
 import mati.vamps.players.Player
@@ -51,6 +50,7 @@ abstract class Weapon(val projectileFactory: ProjectileFactory) {
     abstract fun onUpdate(player: Player)
 
     fun draw(batch: Batch) {
+
         for(pr in projectiles) {
             pr.draw(info.area, batch)
         }
@@ -67,6 +67,8 @@ abstract class Weapon(val projectileFactory: ProjectileFactory) {
     }
     open fun onLevelUP() {}
 
+    fun getNextLevelDescription() : String { return info.getNextLevelDescription() }
+
     fun getProjectileList() : GdxArray<Projectile> {
         val res = GdxArray<Projectile>()
         for(pr in projectiles)
@@ -78,7 +80,26 @@ abstract class Weapon(val projectileFactory: ProjectileFactory) {
         return (info.minDmg + Utils.r.nextInt((info.maxDmg - info.minDmg).toInt())) * info.strength
     }
 
+    fun getName(): String { return info.name }
+
     fun getAreaMultiplier() : Float { return info.area }
+
+    protected fun getPosForProjectileAroundPlayer(player: Player, projectileIndex: Int, total: Int, projectileSep: Float) : Vector2 {
+        val dir = player.getDir()
+
+        val offsetX = dir.y != 0f
+        val offsetY = dir.x != 0f
+
+        var x = player.x
+        var y = player.y
+
+        if(offsetX)
+            x += (total / 2 - projectileIndex) * projectileSep
+        if(offsetY)
+            y += (total / 2 - projectileIndex) * projectileSep
+
+        return Vector2(x, y)
+    }
 
 
 }
