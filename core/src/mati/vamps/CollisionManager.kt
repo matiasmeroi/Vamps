@@ -7,6 +7,7 @@ import mati.vamps.enemies.Enemy
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.items.Item
 import mati.vamps.players.Player
 import com.badlogic.gdx.utils.Array as GdxArray
 
@@ -16,14 +17,15 @@ class CollisionManager {
         const val ENEMY_SEPARATION_ACC = 0.5f
     }
 
-    fun run(player: Player, enemyList: GdxArray<Enemy>) {
+    fun run(player: Player, enemyList: GdxArray<Enemy>, itemList: GdxArray<Item>) {
         separateEnemies(enemyList)
         player2enemy(player, enemyList)
         weapon2enemy(player, enemyList)
+        player2item(player, itemList)
     }
 
 
-    fun player2enemy(player: Player, enemyList: GdxArray<Enemy>) {
+    private fun player2enemy(player: Player, enemyList: GdxArray<Enemy>) {
         val v = Vector2()
        for(enemy in enemyList) {
            v.set(player.x, player.y)
@@ -39,7 +41,7 @@ class CollisionManager {
     }
 
 
-    fun separateEnemies(enemyList: GdxArray<Enemy>) {
+    private fun separateEnemies(enemyList: GdxArray<Enemy>) {
         var nActors = enemyList.size
         var iters = (nActors * 0.9).toInt()
 
@@ -68,7 +70,7 @@ class CollisionManager {
         }
     }
 
-    fun weapon2enemy(player: Player, enemyList: Array<Enemy>) {
+    private fun weapon2enemy(player: Player, enemyList: Array<Enemy>) {
         val j = Utils.json
         val weapons = player.getWeaponList()
         val enemyIter = enemyList.iterator()
@@ -80,7 +82,8 @@ class CollisionManager {
                 while(enemyIter.hasNext()) {
                     val enemy = enemyIter.next()
 
-                    if(pr.getColRect(w.getAreaMultiplier()).overlaps(enemy.getColRect())) {
+                    if(pr.getColRect(w.getAreaMultiplier()).overlaps(enemy.getColRect())
+                        && ! pr.isEnityOnTimeOut(enemy)) {
 
                         pr.onEnemyHit(enemy)
                         val dmg = w.getDmg()
@@ -90,7 +93,10 @@ class CollisionManager {
                             j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(dmg))
 
                         if(enemy.isDead()) {
+                            EventManager.announce(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y))
                             enemyIter.remove()
+                        } else {
+                            pr.timeOutEntity(enemy)
                         }
 
                     }
@@ -99,6 +105,19 @@ class CollisionManager {
 
             }
 
+        }
+    }
+
+    private fun player2item(player: Player, itemList: GdxArray<Item>) {
+        val iter = itemList.iterator()
+        while(iter.hasNext()) {
+            val item = iter.next()
+
+            if(player.getColRect().overlaps(item.getColRect())) {
+                EventManager.announce(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(item.onPickUpEffect()))
+                item.remove()
+                iter.remove()
+            }
         }
     }
 
