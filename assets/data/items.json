@@ -1,0 +1,11 @@
+[
+  {
+    "type": "DIAMOND_BLUE_10",
+    "effect": "GAIN_XP_10",
+    "texture": "items/diamond",
+    "w": 16,
+    "h": 20,
+    "cw": 16,
+    "ch": 20
+  }
+]
