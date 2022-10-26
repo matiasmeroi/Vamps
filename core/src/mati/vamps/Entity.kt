@@ -49,6 +49,8 @@ abstract class Entity: Actor() {
     protected lateinit var info: Info
     protected lateinit var texture: TextureRegion
 
+    val entityId = Utils.getNewId()
+
     open fun initialize(info: Info) {
         this.info = info
 
