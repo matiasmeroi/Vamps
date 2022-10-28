@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Affine2
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import mati.vamps.utils.Utils
 
 abstract class Entity: Actor() {
 
@@ -99,6 +99,12 @@ abstract class Entity: Actor() {
         return Rectangle(x - collisionWidth / 2 + collisionOffsetX, y - collisionHeight / 2 + collisionOffsetY, collisionWidth, collisionHeight)
     }
 
+    fun isOnScreen() : Boolean {
+        var vec = Vector2(x, y)
+        this.stage.stageToScreenCoordinates(vec)
+        return vec.x >= -width / 2 && vec.x <= Gdx.graphics.width + width / 2 && vec.y >= -height / 2 && vec.y <= Gdx.graphics.height + height / 2
+    }
+
     fun drawRect() {
         val r = getRect()
         Vamps.sr().color = Color.BLUE
@@ -111,17 +117,17 @@ abstract class Entity: Actor() {
         Vamps.sr().rect(r.x, r.y,r.width, r.height)
     }
 
-    fun drawCentered(batch: Batch?, texture: TextureRegion) {
-        batch!!.draw(texture, x - width / 2, y - height / 2, width, height)
+//    fun drawCentered(batch: Batch?, texture: TextureRegion) {
+//        batch!!.draw(texture, x - width / 2, y - height / 2, width, height)
+//    }
+
+    fun drawCenteredAndScale(batch: Batch?, texture: TextureRegion, scl: Float = 1f, pos: Vector2 = Vector2(x, y), w : Float = width, h: Float = height) {
+        batch!!.draw(texture, pos.x - (w / 2) * scl,
+            pos.y - (h / 2) * scl
+            , w*scl, h*scl)
     }
 
-    fun drawCenteredAndScale(batch: Batch?, texture: TextureRegion, scl: Float) {
-        batch!!.draw(texture, x - (width / 2) * scl,
-            y - (height / 2) * scl
-            , width*scl, height*scl)
-    }
-
-    fun drawCenteredAndScale(batch: Batch?, texture: TextureRegion, scl: Float, dir: Vector2) {
+    fun drawCenteredAndScaleRot(batch: Batch?, texture: TextureRegion, scl: Float, dir: Vector2) {
         val rotation = dir.angleDeg()
         val a = Affine2()
         a.setToScaling(scl, scl)
