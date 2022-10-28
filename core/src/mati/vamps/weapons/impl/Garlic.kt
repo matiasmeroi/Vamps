@@ -23,6 +23,8 @@ class Garlic(factory: ProjectileFactory) : Weapon(factory) {
         info.minDmg = 1f
         info.maxDmg = 5f
 
+        info.appliesKnockback = false
+
         info.levelUpEffects.put(2, arrayOf(LevelUpEffect.INCREASE_AREA_20))
         info.levelUpEffects.put(3, arrayOf(LevelUpEffect.INCREASE_STRENGTH_10))
         info.levelUpEffects.put(4, arrayOf(LevelUpEffect.INCREASE_AREA_20))
