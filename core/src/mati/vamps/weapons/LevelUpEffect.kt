@@ -11,5 +11,6 @@ enum class LevelUpEffect(val description: String = "Undef") {
     INCREASE_AREA_20("Increase area by 20%"),
     INCREASE_AREA_40("Increase area by 40%"),
 
-    REDUCE_COOLDOWN_8("Reduce cool-down by 8%")
+    REDUCE_COOLDOWN_8("Reduce cool-down by 8%"),
+    REDUCE_COOLDOWN_20("Reduce cool-down by 20%")
 }
