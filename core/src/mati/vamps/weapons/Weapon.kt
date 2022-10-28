@@ -2,16 +2,30 @@ package mati.vamps.weapons
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.players.Player
+import mati.vamps.weapons.impl.Garlic
+import mati.vamps.weapons.impl.HolyWater
+import mati.vamps.weapons.impl.Knives
+import mati.vamps.weapons.impl.Whip
 import mati.vamps.weapons.projectiles.Projectile
 import mati.vamps.weapons.projectiles.ProjectileFactory
 import com.badlogic.gdx.utils.Array as GdxArray
 
-abstract class Weapon(val projectileFactory: ProjectileFactory) {
+abstract class Weapon (val projectileFactory: ProjectileFactory) {
 
     companion object {
         val TAG = Weapon::class.java.getSimpleName()
+
+        fun createByType(type: WeaponType, projectileFactory: ProjectileFactory) : Weapon {
+            when(type) {
+                WeaponType.NONE -> error( "Invalid type")
+                WeaponType.KNIVES -> return Knives(projectileFactory)
+                WeaponType.GARLIC -> return Garlic(projectileFactory)
+                WeaponType.WHIP -> return Whip(projectileFactory)
+                WeaponType.HOLY_WATER -> return HolyWater(projectileFactory)
+            }
+        }
     }
 
     protected var info: WeaponInfo = WeaponInfo()
@@ -81,8 +95,12 @@ abstract class Weapon(val projectileFactory: ProjectileFactory) {
     }
 
     fun getName(): String { return info.name }
+    fun getType(): WeaponType { return info.type }
 
     fun getAreaMultiplier() : Float { return info.area }
+
+    fun appliesKnockback(): Boolean { return info.appliesKnockback }
+    fun getKnockback() : Float { return info.knockbackStrength }
 
     protected fun getPosForProjectileAroundPlayer(player: Player, projectileIndex: Int, total: Int, projectileSep: Float) : Vector2 {
         val dir = player.getDir()
@@ -101,6 +119,13 @@ abstract class Weapon(val projectileFactory: ProjectileFactory) {
         return Vector2(x, y)
     }
 
+    protected fun getPosOnLeft(player: Player, projectileIndex: Int, total: Int, projectileSep: Int, playerSep:Int = 54) : Vector2 {
+        return Vector2(player.x - playerSep, player.y - (total / 2 - projectileIndex) * projectileSep)
+    }
+
+    protected fun getPosOnRight(player: Player, projectileIndex: Int, total: Int, projectileSep: Int, playerSep:Int = 54) : Vector2 {
+        return Vector2(player.x + playerSep, player.y - (total / 2 - projectileIndex) * projectileSep)
+    }
 
 }
 
