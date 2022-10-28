@@ -1,0 +1,85 @@
+[
+  { "minute": 0,
+    "bag": [
+      {
+        "num": 4,
+        "type": "BAT_MEDIUM"
+      },
+      {
+        "num": 1,
+        "type": "SKELETON"
+      }
+    ]
+  },
+
+
+
+
+  { "minute": 1,
+    "bag": [
+      {
+        "num": 1,
+        "type": "SKELETON"
+      },
+      {
+        "num": 1,
+        "type": "BAT_MEDIUM"
+      }
+    ]
+  },
+
+  { "minute": 2,
+    "bag": [
+      {
+        "num": 3,
+        "type": "SKELETON"
+      },
+      {
+        "num": 1,
+        "type": "ZOMBIE"
+      },
+      {
+        "num": 1,
+        "type": "BAT_MEDIUM"
+      }
+    ]
+  },
+
+
+
+
+  { "minute": 3,
+    "bag": [
+      {
+        "num": 3,
+        "type": "SKELETON"
+      },
+      {
+        "num": 4,
+        "type": "ZOMBIE"
+      },
+      {
+        "num": 1,
+        "type": "BAT_MEDIUM"
+      }
+    ]
+  },
+
+
+  { "minute": 4,
+    "bag": [
+      {
+        "num": 1,
+        "type": "SKELETON"
+      },
+      {
+        "num": 4,
+        "type": "ZOMBIE"
+      }
+    ]
+  }
+
+
+
+
+]
