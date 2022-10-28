@@ -6,55 +6,96 @@ import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.maps.MapLayers
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
-import mati.vamps.CollisionManager
-import mati.vamps.Entity
-import mati.vamps.Utils
-import mati.vamps.Vamps
+import mati.vamps.*
 import mati.vamps.enemies.EnemyFactory
 import mati.vamps.enemies.EnemyType
+import mati.vamps.enemies.spawner.Spawner
+import mati.vamps.enemies.spawner.SpawnerData
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.items.ItemFactory
 import mati.vamps.map.Map
 import mati.vamps.particles.BloodParticle
 import mati.vamps.particles.DmgParticle
 import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
+import mati.vamps.players.WeaponUpgradeInfo
+import mati.vamps.ui.GameTimer
+import mati.vamps.ui.UIWindowsManager
+import mati.vamps.ui.UpgradeSelectionUI
+import mati.vamps.utils.Utils
+import mati.vamps.weapons.Holster
+import mati.vamps.weapons.projectiles.ProjectileFactory
 
-class GameScreen : Screen, EventManager.VEventListener {
+class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Listener, GameTimer.Listener {
 
     val mainStage = Stage(
         FitViewport(Gdx.graphics.width + 0f, Gdx.graphics.height + 0f,
             OrthographicCamera()
         )
-
     )
+
+    val uiStage = Stage(
+        FitViewport(Gdx.graphics.width + 0f, Gdx.graphics.height + 0f,
+            OrthographicCamera()
+        )
+    )
+
+
+    private val gameTimer = GameTimer()
 
     private val playerFactory = PlayerFactory()
     private val enemyFactory = EnemyFactory()
+    private val itemFactory = ItemFactory(mainStage)
+    private val projectileFactory = ProjectileFactory()
 
     private val collisionManager = CollisionManager()
+    private val xpHandler = XpHandler()
+    private val uiWindowsManager = UIWindowsManager(uiStage)
 
     private val player: Player
+    private val holster = Holster(projectileFactory)
+
     private val map = Map(mainStage)
+
+    private val spawner = Spawner(gameTimer, enemyFactory, mainStage)
     init {
         EventManager.subscribe(this)
 
+        gameTimer.addListener(this)
+
         playerFactory.load()
         enemyFactory.load()
+        itemFactory.load()
+        projectileFactory.load()
+        SpawnerData.load()
 
-        player = playerFactory.create(PlayerType.GREG)
+        player = playerFactory.create(mainStage, PlayerType.GREG)
+        holster.add(player.initialWeapon())
+
+        projectileFactory.initialize(mainStage, player, enemyFactory.getList())
+
+        uiWindowsManager.initialize()
+        uiWindowsManager.upgradeSelectionUI.listener = this
+
         mainStage.addActor(player)
+
+        uiStage.addActor(xpHandler)
+        uiStage.addActor(gameTimer)
+
+        spawner.spawnAround(player.getPosition(), 500f, 40, EnemyType.ZOMBIE)
     }
 
     override fun show() {
-
+        Vamps.multiplexer().addProcessor(uiStage)
     }
 
     private fun update() {
@@ -77,10 +118,22 @@ class GameScreen : Screen, EventManager.VEventListener {
             mainStage.addActor(e)
         }
 
-        collisionManager.run(player, enemyFactory.getList())
+        if(Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+            val e = enemyFactory.create(EnemyType.BAT_MEDIUM)
+            e.setPosition(stg.x, stg.y)
+            mainStage.addActor(e)
+        }
+
+        holster.update(player)
+
+        collisionManager.run(player, enemyFactory.getList(), itemFactory.getList(), holster)
+        xpHandler.update()
+
+        spawner.update(player.getPosition())
 
         mainStage.act(Gdx.graphics.deltaTime)
         map.update()
+        uiStage.act(Gdx.graphics.deltaTime)
 
     }
 
@@ -103,7 +156,10 @@ class GameScreen : Screen, EventManager.VEventListener {
     }
 
     override fun render(delta: Float) {
-        update()
+        uiWindowsManager.update()
+
+        if(!uiWindowsManager.isWindowOpen())
+            update()
 
         ScreenUtils.clear(0f, 0f, 0f, 1f)
 
@@ -114,6 +170,10 @@ class GameScreen : Screen, EventManager.VEventListener {
         mainStage.batch.setProjectionMatrix(mainStage.getCamera().combined);
 
         mainStage.draw()
+        mainStage.batch.begin()
+        holster.draw(mainStage.batch)
+        mainStage.batch.end()
+        uiStage.draw()
 
         debugDraw()
 
@@ -135,7 +195,7 @@ class GameScreen : Screen, EventManager.VEventListener {
     }
 
     override fun hide() {
-
+        Vamps.multiplexer().removeProcessor(uiStage)
     }
 
     override fun dispose() {
@@ -159,6 +219,18 @@ class GameScreen : Screen, EventManager.VEventListener {
                 par.setPosition(x + 0f, y + 15f)
                 mainStage.addActor(par)
             }
+            VEvent.NEXT_LEVEL -> {
+                uiWindowsManager.showUpgradeWindow(holster)
+            }
         }
+    }
+
+
+    override fun onUpgradeSelected(selected: WeaponUpgradeInfo) {
+        holster.applyWeaponUpgrade(selected)
+    }
+
+    override fun onMinutesChange(minutes: Int) {
+
     }
 }
