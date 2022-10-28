@@ -1,24 +1,30 @@
 package mati.vamps.weapons.projectiles
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
 import mati.vamps.Entity
 import mati.vamps.enemies.Enemy
-import org.w3c.dom.css.Rect
+import com.badlogic.gdx.utils.IntMap
 
 abstract class Projectile : Entity() {
 
     enum class Type {
         NONE,
-        KNIFE
+        KNIFE,
+        GARLIC,
+        WHIP,
+        HOLY_WATER
     }
 
     companion object {
         val TAG = Projectile::class.java.getSimpleName()
+        const val ENTITY_COLLISION_TIMEOUT = 30
     }
+
+
+    // las claves son los id de las entidades a las que no se les aplica daño
+    // los valores son timers
+    private val timeOuts = IntMap<Int>()
 
     override fun getRect() : Rectangle {
 //        Gdx.app.log(TAG, "Warning: calling getRect without area multiplier")
@@ -43,7 +49,38 @@ abstract class Projectile : Entity() {
     abstract fun isDealingDmg() : Boolean
     abstract fun toRemove() : Boolean
     abstract fun onEnemyHit(enemy: Enemy)
-    abstract fun update(areaMultiplier: Float)
+
+
+    fun timeOutEntity(entity: Entity) {
+        timeOuts.put(entityId, ENTITY_COLLISION_TIMEOUT)
+        println("--" + timeOuts.containsKey(entityId) + "<....")
+    }
+
+    fun isEnityOnTimeOut(entity: Entity) : Boolean {
+        val i = timeOuts.keys()
+        while(i.hasNext) {
+            if(entity.entityId == i.next()) {
+                println("HUasdfdfd")
+                return true
+            }
+        }
+        return false
+    }
+
+    fun update(areaMultiplier: Float) {
+        val iter = timeOuts.keys()
+        while(iter.hasNext) {
+            val key = iter.next()
+
+            var t = timeOuts.get(key)
+            t--
+            if(t == 0) timeOuts.remove(key)
+            else timeOuts.put(key, t)
+        }
+
+        onUpdate(areaMultiplier)
+    }
+    abstract fun onUpdate(areaMultiplier: Float)
     abstract fun draw(areaMultiplier: Float, batch: Batch)
 
 
