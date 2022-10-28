@@ -8,7 +8,7 @@ class WeaponInfo {
     companion object {
         val TAG = WeaponInfo::class.java.getSimpleName()
 
-        const val DEF_KNOCKBACK = 0.4f
+        const val DEF_KNOCKBACK = 2.4f
     }
 
     var type: WeaponType = WeaponType.NONE
@@ -22,10 +22,10 @@ class WeaponInfo {
 
     var strength = 1f
     var area = 1f
-    var coolDown = 1f
+    var coolDown = 1f // > => faster
 
     var minDmg = 1f
-    var maxDmg = 1f
+    var maxDmg = 2f
 
     val levelUpEffects = ObjectMap<Int, Array<LevelUpEffect>>()
 
@@ -53,7 +53,9 @@ class WeaponInfo {
             LevelUpEffect.INCREASE_AREA_40 ->
                 area *= 1.4f
             LevelUpEffect.REDUCE_COOLDOWN_8 ->
-                coolDown *= 0.92f
+                coolDown *= 1.08f
+            LevelUpEffect.REDUCE_COOLDOWN_20 ->
+                coolDown *= 1.2f
         }
     }
 
