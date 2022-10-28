@@ -1,7 +1,6 @@
 package mati.vamps
 
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
 import mati.vamps.enemies.Enemy
 import mati.vamps.events.EventManager
@@ -9,18 +8,20 @@ import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import mati.vamps.items.Item
 import mati.vamps.players.Player
+import mati.vamps.utils.Utils
+import mati.vamps.weapons.Holster
 import com.badlogic.gdx.utils.Array as GdxArray
 
 class CollisionManager {
 
     companion object {
-        const val ENEMY_SEPARATION_ACC = 0.5f
+        const val ENEMY_SEPARATION_ACC = 0.7f
     }
 
-    fun run(player: Player, enemyList: GdxArray<Enemy>, itemList: GdxArray<Item>) {
+    fun run(player: Player, enemyList: GdxArray<Enemy>, itemList: GdxArray<Item>, holster: Holster) {
         separateEnemies(enemyList)
         player2enemy(player, enemyList)
-        weapon2enemy(player, enemyList)
+        weapon2enemy(holster, enemyList)
         player2item(player, itemList)
     }
 
@@ -70,9 +71,9 @@ class CollisionManager {
         }
     }
 
-    private fun weapon2enemy(player: Player, enemyList: Array<Enemy>) {
+    private fun weapon2enemy(holster: Holster, enemyList: Array<Enemy>) {
         val j = Utils.json
-        val weapons = player.getWeaponList()
+        val weapons = holster.getWeaponList()
         val enemyIter = enemyList.iterator()
 
         for(w in weapons) {
@@ -82,21 +83,24 @@ class CollisionManager {
                 while(enemyIter.hasNext()) {
                     val enemy = enemyIter.next()
 
+                    if(pr.isEnityOnTimeOut(enemy)) println("H")
                     if(pr.getColRect(w.getAreaMultiplier()).overlaps(enemy.getColRect())
-                        && ! pr.isEnityOnTimeOut(enemy)) {
+                        && !pr.isEnityOnTimeOut(enemy)) {
 
                         pr.onEnemyHit(enemy)
+                        if(w.appliesKnockback()) enemy.applyKnockback(w.getKnockback())
                         val dmg = w.getDmg()
                         enemy.dealDmg(dmg)
 
                         EventManager.announce(VEvent.ENEMY_HIT,
                             j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(dmg))
 
+                        print(pr.isEnityOnTimeOut(enemy))
+                        pr.timeOutEntity(enemy)
+                        println("->$pr.is")
                         if(enemy.isDead()) {
                             EventManager.announce(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y))
                             enemyIter.remove()
-                        } else {
-                            pr.timeOutEntity(enemy)
                         }
 
                     }
