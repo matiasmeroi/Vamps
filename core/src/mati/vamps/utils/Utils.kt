@@ -1,13 +1,11 @@
-package mati.vamps
+package mati.vamps.utils
 
 import com.badlogic.gdx.utils.Json
-import mati.vamps.screens.GameScreen
-import mati.vamps.screens.MenuScreen
 import java.util.*
 
 object Utils {
 
-    const val DEBUG = true
+    const val DEBUG = false
     const val ATLAS_PATH = "gfx/atlas.atlas"
 
 
@@ -16,6 +14,9 @@ object Utils {
 
 
     const val DIAG_SPEED_MULTIPLIER = 0.707f
+
+    private var currentId = 0
+    fun getNewId() : Int { currentId++; return currentId }
 
 
 }

@@ -1,7 +1,8 @@
 package mati.vamps.players
 
 import com.badlogic.gdx.Gdx
-import mati.vamps.Utils
+import com.badlogic.gdx.scenes.scene2d.Stage
+import mati.vamps.utils.Utils
 import com.badlogic.gdx.utils.ObjectMap as GdxMap
 
 class PlayerFactory {
@@ -24,8 +25,8 @@ class PlayerFactory {
         Gdx.app.log(TAG, "${infoArray.size} players loaded")
     }
 
-    fun create(type: PlayerType) : Player {
-        val player = Player()
+    fun create(stage: Stage, type: PlayerType) : Player {
+        val player = Player(stage)
         val info = infoMap.get(type).copy()
         player.initialize(info)
         return player

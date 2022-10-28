@@ -1,17 +1,13 @@
 package mati.vamps
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisProgressBar
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 import mati.vamps.items.ItemEffect
-import javax.swing.plaf.ColorUIResource
+import mati.vamps.utils.Utils
 
 class XpHandler : Table(), EventManager.VEventListener {
 

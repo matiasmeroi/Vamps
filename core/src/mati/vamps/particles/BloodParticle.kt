@@ -2,7 +2,7 @@ package mati.vamps.particles
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.Vamps
 
 class BloodParticle : Actor() {

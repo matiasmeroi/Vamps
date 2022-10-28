@@ -1,9 +1,7 @@
 package mati.vamps.map
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.scenes.scene2d.Stage
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 

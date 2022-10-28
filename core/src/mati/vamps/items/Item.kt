@@ -16,7 +16,7 @@ class Item : Entity() {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
-        drawCentered(batch!!, texture)
+        drawCenteredAndScale(batch!!, texture)
     }
 
 }

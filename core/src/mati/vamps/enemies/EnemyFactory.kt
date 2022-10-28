@@ -1,7 +1,7 @@
 package mati.vamps.enemies
 
 import com.badlogic.gdx.Gdx
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 import com.badlogic.gdx.utils.ObjectMap as GdxMap

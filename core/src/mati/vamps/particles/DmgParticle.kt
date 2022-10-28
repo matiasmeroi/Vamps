@@ -1,8 +1,7 @@
 package mati.vamps.particles
 
-import com.badlogic.gdx.math.Vector2
 import com.kotcrab.vis.ui.widget.VisLabel
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 
 class DmgParticle(val num: Int) : VisLabel("$num") {
 

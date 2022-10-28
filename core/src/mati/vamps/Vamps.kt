@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.kotcrab.vis.ui.VisUI
-import mati.vamps.Utils.ATLAS_PATH
+import mati.vamps.utils.Utils.ATLAS_PATH
 import mati.vamps.screens.GameScreen
 import mati.vamps.screens.MenuScreen
 

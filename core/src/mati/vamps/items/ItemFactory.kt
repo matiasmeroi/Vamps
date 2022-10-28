@@ -3,10 +3,8 @@ package mati.vamps.items
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ObjectMap
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.enemies.EnemyFactory
-import mati.vamps.enemies.EnemyInfo
-import mati.vamps.enemies.EnemyType
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
