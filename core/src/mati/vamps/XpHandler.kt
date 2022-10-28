@@ -35,7 +35,7 @@ class XpHandler : Table(), EventManager.VEventListener {
         if(currentXP >= xpToNext) {
             currentXP = 0
             level++
-            EventManager.announce(VEvent.NEXT_LEVEL, Utils.json.toJson(level))
+            EventManager.announceNot2Enemies(VEvent.NEXT_LEVEL, Utils.json.toJson(level))
             calcXpToNext()
             label.setText("$level")
         }

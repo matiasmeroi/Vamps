@@ -7,5 +7,31 @@
     "h": 22,
     "cw": 30,
     "ch": 14
+  },
+  {
+    "type": "GARLIC",
+    "texture": "items/garlic_circle",
+    "w": 84,
+    "h": 84,
+    "cw": 74,
+    "ch": 74
+  },
+  {
+    "type": "WHIP",
+    "texture": "items/whip_strike",
+    "timeOnScreen": 3,
+    "w": 150,
+    "h": 20,
+    "cw": 150,
+    "ch": 16,
+    "cyo": 3
+  },
+  {
+    "type": "HOLY_WATER",
+    "texture": "items/holy_water_circle",
+    "w": 128,
+    "h": 128,
+    "cw": 100,
+    "ch": 100
   }
 ]

@@ -34,13 +34,12 @@ class CollisionManager {
 
            if(v.len2() < 100 && player.getRect().overlaps(enemy.getRect())) {
                enemy.stop()
-               EventManager.announce(VEvent.PLAYER_ENEMY_COLLISION, Utils.json.toJson(enemy.getDmgPerFrame()))
+               EventManager.announceNot2Enemies(VEvent.PLAYER_ENEMY_COLLISION, Utils.json.toJson(enemy.getDmgPerFrame()))
            }
 
 
        }
     }
-
 
     private fun separateEnemies(enemyList: GdxArray<Enemy>) {
         var nActors = enemyList.size
@@ -57,7 +56,7 @@ class CollisionManager {
 
             val diff = e1.getPosition().sub(e2.getPosition())
 
-            if(diff.len() > 50)  {
+            if(diff.len() >60)  {
                 iters--
                 continue
             }
@@ -92,14 +91,14 @@ class CollisionManager {
                         val dmg = w.getDmg()
                         enemy.dealDmg(dmg)
 
-                        EventManager.announce(VEvent.ENEMY_HIT,
+                        EventManager.announceNot2Enemies(VEvent.ENEMY_HIT,
                             j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(dmg))
 
                         print(pr.isEnityOnTimeOut(enemy))
                         pr.timeOutEntity(enemy)
                         println("->$pr.is")
                         if(enemy.isDead()) {
-                            EventManager.announce(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y))
+                            EventManager.announceNot2Enemies(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(enemy.getEnemyInfo())+ PARAM_SEP +j.toJson(enemy.entityId))
                             enemyIter.remove()
                         }
 
@@ -118,7 +117,7 @@ class CollisionManager {
             val item = iter.next()
 
             if(player.getColRect().overlaps(item.getColRect())) {
-                EventManager.announce(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(item.onPickUpEffect()))
+                EventManager.announceNot2Enemies(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(item.onPickUpEffect()))
                 item.remove()
                 iter.remove()
             }

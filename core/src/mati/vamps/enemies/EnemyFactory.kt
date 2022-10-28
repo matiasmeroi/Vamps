@@ -3,6 +3,7 @@ package mati.vamps.enemies
 import com.badlogic.gdx.Gdx
 import mati.vamps.utils.Utils
 import mati.vamps.events.EventManager
+import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import com.badlogic.gdx.utils.ObjectMap as GdxMap
 import com.badlogic.gdx.utils.Array as GdxArray
@@ -15,8 +16,8 @@ class EnemyFactory : EventManager.VEventListener {
     }
 
     private val infoMap = GdxMap<EnemyType, EnemyInfo>()
-    private val enemyList = GdxArray<Enemy>()
-
+    private val enemyMap = GdxMap<Int, Enemy>()
+    private val enemiesOnScreen = GdxArray<Enemy>()
     init {
         EventManager.subscribe(this)
     }
@@ -36,22 +37,35 @@ class EnemyFactory : EventManager.VEventListener {
         val enemy = Enemy()
         val info = infoMap.get(type).copy()
         enemy.initialize(info)
-        enemyList.add(enemy)
+        enemyMap.put(enemy.entityId, enemy)
         return enemy
     }
 
     fun getList(): GdxArray<Enemy> {
-        return enemyList
+        return enemyMap.values().toArray()
+    }
+
+    fun getOnScreenList(): GdxArray<Enemy> {
+        return enemiesOnScreen
     }
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
             VEvent.ENEMY_KILLED -> {
-
+                val p = params.split(PARAM_SEP)
+                val targetId = p[3].toInt()
+                enemiesOnScreen.removeAll { enemy -> enemy.entityId == targetId }
+                enemyMap.remove(targetId)
             }
 
-            VEvent.ENEMY_REMOVED -> {
 
+            VEvent.ENEMY_OFF_SCREEN -> {
+                val targetId = params.toInt()
+                enemiesOnScreen.removeAll { enemy -> enemy.entityId == targetId }
+            }
+            VEvent.ENEMY_ON_SCREEN -> {
+                val id = params.toInt()
+                enemiesOnScreen.add(enemyMap.get(id))
             }
         }
     }

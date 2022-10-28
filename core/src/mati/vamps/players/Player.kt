@@ -75,7 +75,7 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
        setPosition(x + dx, y + dy)
 
         if(dx != 0f || dy != 0f) {
-            EventManager.announce(VEvent.PLAYER_MOVED_BY, "${Utils.json.toJson(dx)}$PARAM_SEP${Utils.json.toJson(dy)}")
+            EventManager.announceNot2Enemies(VEvent.PLAYER_MOVED_BY, "${Utils.json.toJson(dx)}$PARAM_SEP${Utils.json.toJson(dy)}")
 
             dir.set(Math.signum(dx), Math.signum(dy))
         }
@@ -88,7 +88,7 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
         if((Gdx.graphics.frameId.toInt() % 20) == 0) {
             val jx = Utils.json.toJson(x)
             val jy = Utils.json.toJson(y)
-            EventManager.announce(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
+            EventManager.announce2Enemies(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
         }
     }
 

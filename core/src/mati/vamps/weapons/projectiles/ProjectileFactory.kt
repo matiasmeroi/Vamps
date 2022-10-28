@@ -41,17 +41,10 @@ class ProjectileFactory() {
     }
 
     private fun getSomeEnemyOnScreen() : Enemy? {
-        val maxIters = 200
-        var iterations = 0
-        val iterator = enemyList.iterator()
-        var result : Enemy? = null
-        var found = false
-        while(iterator.hasNext() && !found) {
-            val enemy = iterator.next()
-            if(enemy.isOnScreen() && ((iterations > maxIters || Utils.r.nextFloat() < 0.3f) || result == null)) {
-                result = enemy
-            }
-            iterations++
+        var result: Enemy? = null
+        if(enemyList.notEmpty()) {
+            val r = Utils.r.nextInt(enemyList.size)
+            result = enemyList.get(r)
         }
         return result
     }

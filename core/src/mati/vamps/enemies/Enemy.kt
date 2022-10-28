@@ -12,6 +12,10 @@ import mati.vamps.events.VEvent
 
 class Enemy : Entity(), EventManager.VEventListener{
 
+    private enum class ScreenState {
+        UNINITIALIZED, ON, OFF
+    }
+
     companion object {
         const val MOVE_SPEED = 1.3f
     }
@@ -19,27 +23,16 @@ class Enemy : Entity(), EventManager.VEventListener{
     private var lastPlayerInfo: Vector2 = Vector2(0f, 0f)
     private var mustApplyKnockback = false
 
+    private var state = ScreenState.UNINITIALIZED
+
     override fun initialize(i: Info) {
        super.initialize(i)
 
-       EventManager.subscribe(this)
+       EventManager.subscribeAsEnemy(this)
     }
 
     override fun act(delta: Float) {
         super.act(delta)
-
-//        val angle = MathUtils.atan2(lastPlayerInfo.y - y, lastPlayerInfo.x - x)
-//        val dir2player = Vector2(MathUtils.cos(angle), MathUtils.sin(angle) )
-//            this.acceleration.set(dir2player.x * (info as EnemyInfo).moveSpeed,
-//                    dir2player.y * (info as EnemyInfo).moveSpeed)
-//
-//
-//        velocity.add(acceleration)
-//
-//        if(mustApplyKnockback) {
-//            velocity.scl(-1f)
-//            mustApplyKnockback = false
-//        }
 
         velocity.add(acceleration)
 
@@ -48,6 +41,24 @@ class Enemy : Entity(), EventManager.VEventListener{
         y += velocity.y
 
         acceleration.set(0f, 0f)
+
+        checkIfOnScreen()
+    }
+
+    private fun checkIfOnScreen() {
+        var newState = ScreenState.UNINITIALIZED
+        if(this.isOnScreen()) {
+            newState = ScreenState.ON
+        } else {
+            newState = ScreenState.OFF
+        }
+
+        val changed = newState != state
+        state = newState
+        if(changed) {
+            if(state == ScreenState.ON) EventManager.announceNot2Enemies(VEvent.ENEMY_ON_SCREEN, Utils.json.toJson(this.entityId))
+            if(state == ScreenState.OFF) EventManager.announceNot2Enemies(VEvent.ENEMY_OFF_SCREEN, Utils.json.toJson(this.entityId))
+        }
     }
 
     fun stop() {
@@ -94,14 +105,6 @@ class Enemy : Entity(), EventManager.VEventListener{
     fun dealDmg(dmg: Float) {
         (info as EnemyInfo).health -= dmg
         if((info as EnemyInfo).health <= 0) {
-            val js = Utils.json
-            val params = js.toJson(x) +
-                        PARAM_SEP +
-                        js.toJson(y) +
-                        PARAM_SEP +
-                        js.toJson(info as EnemyInfo)
-            EventManager.announce(VEvent.ENEMY_KILLED, params)
-
             remove()
         }
     }

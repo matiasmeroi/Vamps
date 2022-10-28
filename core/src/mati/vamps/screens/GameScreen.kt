@@ -81,7 +81,7 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
         player = playerFactory.create(mainStage, PlayerType.GREG)
         holster.add(player.initialWeapon())
 
-        projectileFactory.initialize(mainStage, player, enemyFactory.getList())
+        projectileFactory.initialize(mainStage, player, enemyFactory.getOnScreenList())
 
         uiWindowsManager.initialize()
         uiWindowsManager.upgradeSelectionUI.listener = this
