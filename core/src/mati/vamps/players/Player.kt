@@ -2,26 +2,18 @@ package mati.vamps.players
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Event
+import com.badlogic.gdx.scenes.scene2d.Stage
 import mati.vamps.Entity
-import mati.vamps.Utils
+import mati.vamps.utils.Utils
 import mati.vamps.Vamps
-import mati.vamps.enemies.EnemyInfo
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
-import mati.vamps.weapons.Knives
-import mati.vamps.weapons.Weapon
-import mati.vamps.weapons.projectiles.ProjectileFactory
-import com.badlogic.gdx.utils.Array as GdxArray
-class Player : Entity(), EventManager.VEventListener {
+import mati.vamps.weapons.WeaponType
+
+class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
 
     companion object {
         const val MOVE_SPEED = 3f
@@ -34,8 +26,7 @@ class Player : Entity(), EventManager.VEventListener {
     private var healthBarWidth: Int = 0
     private var healthBarHeight: Int = 0
 
-    private var projectileFactory = ProjectileFactory()
-    private var weapons = GdxArray<Weapon>()
+
 
     override fun initialize(i: Info) {
         super.initialize(i)
@@ -43,13 +34,15 @@ class Player : Entity(), EventManager.VEventListener {
         health = i.maxHealth
         healthBarWidth = Vamps.atlas().findRegion("players/health_bar_black").regionWidth
         healthBarHeight = Vamps.atlas().findRegion("players/health_bar_black").regionHeight
-        projectileFactory.load()
-        weapons.add(Knives(projectileFactory))
         EventManager.subscribe(this)
     }
 
     fun getDir() : Vector2 {
         return dir
+    }
+
+    fun initialWeapon(): WeaponType {
+        return (info as PlayerInfo).initialWeapon
     }
 
     fun handleInput() {
@@ -87,8 +80,7 @@ class Player : Entity(), EventManager.VEventListener {
             dir.set(Math.signum(dx), Math.signum(dy))
         }
 
-        for(w in weapons)
-            w.update(this)
+
     }
 
     override fun act(delta: Float) {
@@ -112,15 +104,15 @@ class Player : Entity(), EventManager.VEventListener {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
-        drawCentered(batch, texture)
+        drawCenteredAndScale(batch, texture)
         drawHealthBar(batch)
-
-        for(w in weapons) w.draw(batch!!)
     }
 
-    fun getWeaponList() : GdxArray<Weapon> {
-        return weapons
-    }
+
+
+
+
+
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {

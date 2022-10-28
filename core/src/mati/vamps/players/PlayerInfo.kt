@@ -1,10 +1,12 @@
 package mati.vamps.players
 
 import mati.vamps.Entity
+import mati.vamps.weapons.WeaponType
 
 data class PlayerInfo (
     var name: String = "Unnamed",
     var description: String = "Empty Description",
+    var initialWeapon: WeaponType = WeaponType.NONE,
     var maxHealth: Float = 100f,
     var might: Float = 1f,
     var armor: Float = 0f,
