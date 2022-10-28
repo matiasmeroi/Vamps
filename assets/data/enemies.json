@@ -2,8 +2,22 @@
   {
     "type": "BAT_MEDIUM",
     "texture": "enemies/bat",
+    "health": 4,
+    "dmgPerFrame": 0.4,
     "cw": 36,
     "ch": 22,
     "cyo": 8
+  },
+  {
+    "type": "SKELETON",
+    "texture": "enemies/skeleton1",
+    "health": 10,
+    "dmgPerFrame": 0.5
+  },
+  {
+    "type": "ZOMBIE",
+    "texture": "enemies/zombie1",
+    "health": 20,
+    "dmgPerFrame": 0.6
   }
 ]

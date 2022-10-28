@@ -2,6 +2,7 @@
   {
     "name": "Greg",
     "description": "Default settings",
+    "initialWeapon": "WHIP",
     "type": "GREG",
     "texture": "players/greg"
   }

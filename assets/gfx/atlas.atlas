@@ -3,6 +3,107 @@ atlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+enemies/skeleton1
+  rotate: false
+  xy: 1, 27
+  size: 30, 31
+  orig: 30, 31
+  offset: 0, 0
+  index: -1
+enemies/zombie1
+  rotate: false
+  xy: 33, 27
+  size: 30, 31
+  orig: 30, 31
+  offset: 0, 0
+  index: -1
+enemies/bat
+  rotate: false
+  xy: 1, 1
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+items/holy_water_circle
+  rotate: false
+  xy: 1, 97
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+items/whip_strike
+  rotate: false
+  xy: 1, 63
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+items/garlic_circle
+  rotate: false
+  xy: 131, 161
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+items/blood1
+  rotate: false
+  xy: 1, 19
+  size: 41, 42
+  orig: 41, 42
+  offset: 0, 0
+  index: -1
+items/blood2
+  rotate: false
+  xy: 131, 117
+  size: 41, 42
+  orig: 41, 42
+  offset: 0, 0
+  index: -1
+items/blood3
+  rotate: false
+  xy: 197, 183
+  size: 41, 42
+  orig: 41, 42
+  offset: 0, 0
+  index: -1
+items/whip
+  rotate: false
+  xy: 240, 211
+  size: 15, 14
+  orig: 15, 14
+  offset: 0, 0
+  index: -1
+items/holy_water
+  rotate: false
+  xy: 1, 1
+  size: 14, 16
+  orig: 14, 16
+  offset: 0, 0
+  index: -1
+items/knife
+  rotate: false
+  xy: 44, 52
+  size: 16, 9
+  orig: 16, 9
+  offset: 0, 0
+  index: -1
+items/diamond
+  rotate: false
+  xy: 131, 103
+  size: 9, 12
+  orig: 9, 12
+  offset: 0, 0
+  index: -1
+
+atlas3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 map/bg/bg_molise
   rotate: false
   xy: 1, 1
@@ -11,11 +112,25 @@ map/bg/bg_molise
   offset: 0, 0
   index: -1
 
-atlas2.png
+atlas4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-players/p1/p1
+players/health_bar_black
+  rotate: false
+  xy: 1, 51
+  size: 78, 10
+  orig: 78, 10
+  offset: 0, 0
+  index: -1
+players/health_bar_red
+  rotate: false
+  xy: 1, 39
+  size: 78, 10
+  orig: 78, 10
+  offset: 0, 0
+  index: -1
+players/greg
   rotate: false
   xy: 1, 1
   size: 36, 36
