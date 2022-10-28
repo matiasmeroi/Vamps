@@ -52,15 +52,13 @@ abstract class Projectile : Entity() {
 
 
     fun timeOutEntity(entity: Entity) {
-        timeOuts.put(entityId, ENTITY_COLLISION_TIMEOUT)
-        println("--" + timeOuts.containsKey(entityId) + "<....")
+        timeOuts.put(entity.entityId, ENTITY_COLLISION_TIMEOUT)
     }
 
     fun isEnityOnTimeOut(entity: Entity) : Boolean {
         val i = timeOuts.keys()
         while(i.hasNext) {
             if(entity.entityId == i.next()) {
-                println("HUasdfdfd")
                 return true
             }
         }
