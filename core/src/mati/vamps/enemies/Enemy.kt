@@ -17,7 +17,7 @@ class Enemy : Entity(), EventManager.VEventListener{
     }
 
     companion object {
-        const val MOVE_SPEED = 1.3f
+        const val MOVE_SPEED = 1f
     }
 
     private var lastPlayerInfo: Vector2 = Vector2(0f, 0f)
