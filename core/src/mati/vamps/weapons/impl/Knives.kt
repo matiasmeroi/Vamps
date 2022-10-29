@@ -12,7 +12,6 @@ import mati.vamps.weapons.projectiles.ProjectileFactory
 
 class Knives(factory: ProjectileFactory): Weapon(factory) {
 
-    private var newProjectile: Boolean = false
     private val addTimeSep = 5
     private var addNewProjectileTimer = 0
     private var projectileIndex = 0
@@ -40,7 +39,6 @@ class Knives(factory: ProjectileFactory): Weapon(factory) {
         if(projectileIndex < info.numProjectiles && addNewProjectileTimer <= 0) {
                 val pr = projectileFactory.create(Projectile.Type.KNIFE, player.getDir())
                 val pos = getPosForProjectileAroundPlayer(player, projectileIndex, info.numProjectiles, info.area * pr.width / 2)
-                pr.setPosition(pos.x, pos.y)
                 addProjectile(pr)
                 addNewProjectileTimer = addTimeSep
                 projectileIndex++

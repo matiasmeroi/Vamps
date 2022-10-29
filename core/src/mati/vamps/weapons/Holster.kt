@@ -45,7 +45,7 @@ class Holster(val projectileFactory: ProjectileFactory) {
 
         for(t in WeaponType.values()) {
             if(t != WeaponType.NONE && !(t in ownedTypes)) {
-                res.add(WeaponUpgradeInfo(t, UpgradeType.ADD_WEAPON, t.desciption))
+                res.add(WeaponUpgradeInfo(t, UpgradeType.ADD_WEAPON, t.description))
             }
         }
 
