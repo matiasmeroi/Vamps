@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.kotcrab.vis.ui.VisUI
+import mati.vamps.events.EventManager
+import mati.vamps.events.VEvent
 import mati.vamps.utils.Utils.ATLAS_PATH
 import mati.vamps.screens.GameScreen
 import mati.vamps.screens.MenuScreen
 
-object Vamps : Game() {
+object Vamps : Game(), EventManager.VEventListener {
 
     private lateinit var batch: SpriteBatch
     private lateinit var sr: ShapeRenderer
@@ -49,7 +51,9 @@ object Vamps : Game() {
         mainMenuScreen = MenuScreen()
         gameScreen = GameScreen()
 
-        setScreen(gameScreen)
+        EventManager.subscribe(this)
+
+        setScreen(mainMenuScreen)
     }
 
     fun getScreenByType(screenType: ScreenType?): Screen {
@@ -64,5 +68,13 @@ object Vamps : Game() {
         super.dispose()
         batch.dispose()
         assets.dispose()
+    }
+
+    override fun onVEvent(event: VEvent, params: String) {
+        when(event) {
+            VEvent.GAME_START -> {
+                setScreen(getScreenByType(ScreenType.GAME_SCREEN))
+            }
+        }
     }
 }
