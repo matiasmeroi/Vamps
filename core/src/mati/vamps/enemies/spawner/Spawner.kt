@@ -20,7 +20,7 @@ class Spawner(val timer: GameTimer, val factory: EnemyFactory, val stage: Stage)
     private var currentMinute = 0
 
     fun update(playerPosition: Vector2) {
-        if((Gdx.graphics.frameId % 60).toInt() == 0 ) {
+        if((Gdx.graphics.frameId % 45).toInt() == 0 ) {
             val e = factory.create(SpawnerData.getRandomEnemyTypeForMinute(currentMinute))
             stage.addActor(e)
             setPositionOffScreen(playerPosition, e)

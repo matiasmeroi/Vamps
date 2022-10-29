@@ -91,7 +91,7 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
         uiStage.addActor(xpHandler)
         uiStage.addActor(gameTimer)
 
-        spawner.spawnAround(player.getPosition(), 500f, 40, EnemyType.ZOMBIE)
+        spawner.spawnAround(player.getPosition(), 700f, 30, EnemyType.BAT_MEDIUM)
     }
 
     override fun show() {

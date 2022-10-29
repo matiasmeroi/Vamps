@@ -71,8 +71,9 @@ abstract class Projectile : Entity() {
             val key = iter.next()
 
             var t = timeOuts.get(key)
+            if(t == null) continue
             t--
-            if(t == 0) timeOuts.remove(key)
+            if(t <= 0) timeOuts.remove(key)
             else timeOuts.put(key, t)
         }
 
