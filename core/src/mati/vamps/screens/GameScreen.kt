@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.maps.MapLayers
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -29,13 +28,14 @@ import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
 import mati.vamps.players.WeaponUpgradeInfo
 import mati.vamps.ui.GameTimer
+import mati.vamps.ui.GenericListSelector
 import mati.vamps.ui.UIWindowsManager
-import mati.vamps.ui.UpgradeSelectionUI
 import mati.vamps.utils.Utils
 import mati.vamps.weapons.Holster
 import mati.vamps.weapons.projectiles.ProjectileFactory
 
-class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Listener, GameTimer.Listener {
+class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
+    GenericListSelector.Listener<WeaponUpgradeInfo> {
 
     val mainStage = Stage(
         FitViewport(Gdx.graphics.width + 0f, Gdx.graphics.height + 0f,
@@ -61,24 +61,30 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
     private val xpHandler = XpHandler()
     private val uiWindowsManager = UIWindowsManager(uiStage)
 
-    private val player: Player
+    private var playerType: PlayerType  = PlayerType.WANDA
+    private lateinit var player: Player
     private val holster = Holster(projectileFactory)
 
     private val map = Map(mainStage)
 
     private val spawner = Spawner(gameTimer, enemyFactory, mainStage)
+
+    private var initilized = false
+
     init {
         EventManager.subscribe(this)
-
-        gameTimer.addListener(this)
 
         playerFactory.load()
         enemyFactory.load()
         itemFactory.load()
         projectileFactory.load()
         SpawnerData.load()
+    }
 
-        player = playerFactory.create(mainStage, PlayerType.GREG)
+    private fun initialize() {
+        gameTimer.addListener(this)
+
+        player = playerFactory.create(mainStage, playerType)
         holster.add(player.initialWeapon())
 
         projectileFactory.initialize(mainStage, player, enemyFactory.getOnScreenList())
@@ -92,6 +98,7 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
         uiStage.addActor(gameTimer)
 
         spawner.spawnAround(player.getPosition(), 700f, 30, EnemyType.BAT_MEDIUM)
+        initilized = true
     }
 
     override fun show() {
@@ -156,6 +163,8 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
     }
 
     override fun render(delta: Float) {
+        if(!initilized) return
+
         uiWindowsManager.update()
 
         if(!uiWindowsManager.isWindowOpen())
@@ -205,6 +214,14 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
     override fun onVEvent(event: VEvent, params: String) {
         val j = Utils.json
         when(event) {
+            VEvent.GAME_START -> {
+                initialize()
+            }
+            VEvent.PLAYER_TYPE_SELECTED -> {
+                val t = Utils.json.fromJson(PlayerType::class.java, params)
+                println(".$t")
+                playerType = t
+            }
             VEvent.PLAYER_ENEMY_COLLISION -> {
                 val p  = BloodParticle()
                 p.setPosition(player.x, player.y)
@@ -226,11 +243,11 @@ class GameScreen : Screen, EventManager.VEventListener, UpgradeSelectionUI.Liste
     }
 
 
-    override fun onUpgradeSelected(selected: WeaponUpgradeInfo) {
-        holster.applyWeaponUpgrade(selected)
-    }
-
     override fun onMinutesChange(minutes: Int) {
 
+    }
+
+    override fun onOptionSelected(option: WeaponUpgradeInfo) {
+        holster.applyWeaponUpgrade(option)
     }
 }
