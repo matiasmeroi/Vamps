@@ -82,7 +82,6 @@ class CollisionManager {
                 while(enemyIter.hasNext()) {
                     val enemy = enemyIter.next()
 
-                    if(pr.isEnityOnTimeOut(enemy)) println("H")
                     if(pr.getColRect(w.getAreaMultiplier()).overlaps(enemy.getColRect())
                         && !pr.isEnityOnTimeOut(enemy)) {
 
@@ -94,9 +93,8 @@ class CollisionManager {
                         EventManager.announceNot2Enemies(VEvent.ENEMY_HIT,
                             j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(dmg))
 
-                        print(pr.isEnityOnTimeOut(enemy))
                         pr.timeOutEntity(enemy)
-                        println("->$pr.is")
+
                         if(enemy.isDead()) {
                             EventManager.announceNot2Enemies(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(enemy.getEnemyInfo())+ PARAM_SEP +j.toJson(enemy.entityId))
                             enemyIter.remove()
