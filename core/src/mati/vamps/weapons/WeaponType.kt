@@ -1,9 +1,10 @@
 package mati.vamps.weapons
 
-enum class WeaponType(val desciption: String = "") {
+enum class WeaponType(val description: String = "") {
     NONE,
-    KNIVES(desciption = "Throw knives at enemies"),
-    GARLIC(desciption = "Hurts nearby enemies"),
-    WHIP(desciption = "Hits several enemies at a time"),
-    HOLY_WATER(desciption = "Creates areas of damage")
+    KNIVES(description = "Throw knives at enemies"),
+    GARLIC(description = "Hurts nearby enemies"),
+    WHIP(description = "Hits several enemies at a time"),
+    HOLY_WATER(description = "Creates areas of damage"),
+    MAGIC_WAND(description = "Fires at the nearest enemy")
 }
