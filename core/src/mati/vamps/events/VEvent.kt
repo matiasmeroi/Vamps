@@ -2,6 +2,8 @@ package mati.vamps.events
 
 enum class VEvent  {
 
+    PLAYER_TYPE_SELECTED,
+
     PLAYER_POSITION,
     PLAYER_MOVED_BY,
     PLAYER_ENEMY_COLLISION,
@@ -13,6 +15,9 @@ enum class VEvent  {
     NEXT_LEVEL,
 
     ENEMY_ON_SCREEN,
-    ENEMY_OFF_SCREEN
+    ENEMY_OFF_SCREEN,
+
+    GAME_START,
+
 
 }
