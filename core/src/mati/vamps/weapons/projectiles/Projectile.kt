@@ -13,7 +13,8 @@ abstract class Projectile : Entity() {
         KNIFE,
         GARLIC,
         WHIP,
-        HOLY_WATER
+        HOLY_WATER,
+        MAGIC_BULLET
     }
 
     companion object {

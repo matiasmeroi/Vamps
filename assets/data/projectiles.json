@@ -33,5 +33,14 @@
     "h": 128,
     "cw": 100,
     "ch": 100
+  },
+  {
+    "type": "MAGIC_BULLET",
+    "texture": "items/magic_bullet",
+    "speed": 8,
+    "w": 16,
+    "h": 16,
+    "cw": 16,
+    "ch": 16
   }
 ]

@@ -49,6 +49,25 @@ class ProjectileFactory() {
         return result
     }
 
+    private fun getClosestEnemy() : Enemy? {
+        var result: Enemy? = null
+        var minDist = 10000000f
+        for(i in 0 until enemyList.size) {
+            val d = enemyList.get(i).getPosition().sub(player.getPosition()).len2()
+            if(d < minDist) {
+                result = enemyList.get(i)
+                minDist = d
+            }
+        }
+
+        return result
+    }
+
+    private fun generateRandomTarget(): Vector2 {
+        return Vector2(player.x + Utils.r.nextInt(Gdx.graphics.width) - Gdx.graphics.width / 2,
+            player.y + Utils.r.nextInt(Gdx.graphics.height) - Gdx.graphics.height / 2)
+    }
+
     fun create(type: Projectile.Type, dir: Vector2 = Vector2(0f, 0f)) : Projectile{
         when(type) {
             Projectile.Type.NONE -> error("Invalid projectile type")
@@ -56,6 +75,7 @@ class ProjectileFactory() {
                 val p = ThrowableProjectile(dir)
                 val info = infoMap.get(type).copy()
                 p.initialize(info)
+                p.setPosition(player.x, player.y)
                 stage.addActor(p)
                 return p
             }
@@ -64,6 +84,7 @@ class ProjectileFactory() {
                 val p = GarlicArea()
                 val info = infoMap.get(type).copy()
                 p.initialize(info)
+                p.setPosition(player.x, player.y)
                 stage.addActor(p)
                 return p
             }
@@ -80,20 +101,27 @@ class ProjectileFactory() {
                 val targetPosition = Vector2()
 
                 if(target == null) {
-                    targetPosition.set(player.x + Utils.r.nextInt(Gdx.graphics.width) - Gdx.graphics.width / 2,
-                        player.y + Utils.r.nextInt(Gdx.graphics.height) - Gdx.graphics.height / 2)
+                    targetPosition.set(generateRandomTarget())
                 } else targetPosition.set(target.getPosition())
 
                 val p = HolyWaterBottle(player.getPosition(), targetPosition)
                 p.setPosition(targetPosition.x, targetPosition.y)
                 val info = infoMap.get(type).copy()
-                println(info)
                 p.initialize(info)
                 stage.addActor(p)
                 return p
             }
 
-
+            Projectile.Type.MAGIC_BULLET -> {
+                val closestEnemyPosition = getClosestEnemy()?.getPosition() ?: generateRandomTarget()
+                val dir = closestEnemyPosition.sub(player.x, player.y).nor()
+                val p = ThrowableProjectile(dir, true)
+                val info = infoMap.get(type).copy()
+                p.initialize(info)
+                p.setPosition(player.x, player.y)
+                stage.addActor(p)
+                return p
+            }
         }
     }
 }
