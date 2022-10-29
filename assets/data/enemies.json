@@ -2,7 +2,7 @@
   {
     "type": "BAT_MEDIUM",
     "texture": "enemies/bat",
-    "health": 4,
+    "health": 1,
     "dmgPerFrame": 0.4,
     "cw": 36,
     "ch": 22,
