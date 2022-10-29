@@ -8,11 +8,21 @@ import com.badlogic.gdx.utils.ObjectMap as GdxMap
 class PlayerFactory {
 
     companion object {
-        val TAG = PlayerFactory::class.java.getSimpleName()
+        val TAG = PlayerFactory::class.java.simpleName
         const val INFO_FILE = "data/players.json"
+
+        private var infoMap = GdxMap<PlayerType, PlayerInfo>()
+
+        fun getDescriptionForType(type: PlayerType, addName: Boolean = true) : String {
+            val info = infoMap.get(type)
+            var str = if(addName) "${info.name} -> " else ""
+            str += info.description + " -> " + info.initialWeapon.name
+            return str
+        }
+
     }
 
-    private var infoMap = GdxMap<PlayerType, PlayerInfo>()
+
 
     fun load() {
         val fileString = Gdx.files.internal(INFO_FILE).readString()
@@ -24,6 +34,7 @@ class PlayerFactory {
 
         Gdx.app.log(TAG, "${infoArray.size} players loaded")
     }
+
 
     fun create(stage: Stage, type: PlayerType) : Player {
         val player = Player(stage)
