@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 import mati.vamps.utils.Utils
 import mati.vamps.players.Player
-import mati.vamps.weapons.impl.Garlic
-import mati.vamps.weapons.impl.HolyWater
-import mati.vamps.weapons.impl.Knives
-import mati.vamps.weapons.impl.Whip
+import mati.vamps.weapons.impl.*
 import mati.vamps.weapons.projectiles.Projectile
 import mati.vamps.weapons.projectiles.ProjectileFactory
 import com.badlogic.gdx.utils.Array as GdxArray
@@ -24,6 +21,7 @@ abstract class Weapon (val projectileFactory: ProjectileFactory) {
                 WeaponType.GARLIC -> return Garlic(projectileFactory)
                 WeaponType.WHIP -> return Whip(projectileFactory)
                 WeaponType.HOLY_WATER -> return HolyWater(projectileFactory)
+                WeaponType.MAGIC_WAND -> return MagicWand(projectileFactory)
             }
         }
     }
