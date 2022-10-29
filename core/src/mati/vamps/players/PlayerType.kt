@@ -2,5 +2,7 @@ package mati.vamps.players
 
 enum class PlayerType {
     NONE,
-    GREG
+    GREG,
+    COSMO,
+    WANDA
 }

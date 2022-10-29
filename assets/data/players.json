@@ -2,8 +2,22 @@
   {
     "name": "Greg",
     "description": "Default settings",
-    "initialWeapon": "WHIP",
+    "initialWeapon": "KNIVES",
     "type": "GREG",
     "texture": "players/greg"
+  },
+  {
+    "name": "Cosmo",
+    "description": "Default settings",
+    "initialWeapon": "MAGIC_WAND",
+    "type": "COSMO",
+    "texture": "players/cosmo"
+  },
+  {
+    "name": "Wanda",
+    "description": "Default settings",
+    "initialWeapon": "WHIP",
+    "type": "WANDA",
+    "texture": "players/wanda"
   }
 ]
