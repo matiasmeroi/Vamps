@@ -1,6 +1,4 @@
-package mati.vamps.players
-
-import mati.vamps.weapons.WeaponType
+package mati.vamps.weapons
 
 data class WeaponUpgradeInfo (val weaponType: WeaponType, val upgradeType: UpgradeType, val description: String)
 
