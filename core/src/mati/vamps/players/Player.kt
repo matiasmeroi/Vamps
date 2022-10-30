@@ -2,7 +2,9 @@ package mati.vamps.players
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import mati.vamps.Entity
@@ -43,6 +45,11 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
 
     fun initialWeapon(): WeaponType {
         return (info as PlayerInfo).initialWeapon
+    }
+
+    fun getItemPickUpRect(): Rectangle {
+        val r = (info as PlayerInfo).pickupRadius
+        return Rectangle(x - r / 2, y - r / 2, r, r)
     }
 
     fun handleInput() {
@@ -92,13 +99,19 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
         }
     }
 
-    fun drawHealthBar(batch: Batch?) {
+    private fun drawHealthBar(batch: Batch?) {
         val yoff = height / 2 + healthBarHeight + 3
 
         batch!!.draw(Vamps.atlas().findRegion("players/health_bar_black"), x - healthBarWidth / 2, y - yoff)
 
         val healthWidth =  healthBarWidth * (health / (info as PlayerInfo).maxHealth)
         batch!!.draw(Vamps.atlas().findRegion("players/health_bar_red"), x - healthBarWidth / 2, y - yoff, healthWidth, healthBarHeight+0f)
+    }
+
+    fun drawPickUpRect() {
+        val r = getItemPickUpRect()
+        Vamps.sr().color = Color.BLUE
+        Vamps.sr().rect(r.x, r.y,r.width, r.height)
     }
 
 

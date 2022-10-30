@@ -5,8 +5,10 @@ import java.util.*
 
 object Utils {
 
-    const val DEBUG = false
+    const val DEBUG = true
     const val ATLAS_PATH = "gfx/atlas.atlas"
+
+    const val MAX_WEAPON_UPGRADES_OFFERED = 3
 
 
     val json = Json()

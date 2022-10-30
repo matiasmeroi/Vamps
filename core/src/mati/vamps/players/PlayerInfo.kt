@@ -12,7 +12,7 @@ data class PlayerInfo (
     var armor: Float = 0f,
     var moveSpeed: Float = 1f,
     var recovery: Float = 0f,
-    var pickupRadius: Float = 30f,
+    var pickupRadius: Float = 60f,
     var weaponCooldownMultiplier: Float = 1f,
     var type: PlayerType = PlayerType.NONE,
 

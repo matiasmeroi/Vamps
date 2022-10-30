@@ -114,7 +114,7 @@ class CollisionManager {
         while(iter.hasNext()) {
             val item = iter.next()
 
-            if(player.getColRect().overlaps(item.getColRect())) {
+            if(player.getItemPickUpRect().overlaps(item.getColRect())) {
                 EventManager.announceNot2Enemies(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(item.onPickUpEffect()))
                 item.remove()
                 iter.remove()
