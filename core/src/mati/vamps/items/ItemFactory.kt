@@ -14,7 +14,7 @@ class ItemFactory(val stage: Stage) : EventManager.VEventListener {
 
     companion object {
         const val INFO_FILE = "data/items.json"
-        const val CREATION_RATE = 0.3f
+        const val CREATION_RATE = 0.5f
     }
 
     private val infoMap = ObjectMap<Item.Type, ItemInfo>()

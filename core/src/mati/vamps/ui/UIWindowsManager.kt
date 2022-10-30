@@ -3,8 +3,7 @@ package mati.vamps.ui
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.kotcrab.vis.ui.widget.VisWindow
-import mati.vamps.players.Player
-import mati.vamps.players.WeaponUpgradeInfo
+import mati.vamps.weapons.WeaponUpgradeInfo
 import mati.vamps.utils.Utils
 import mati.vamps.weapons.Holster
 import com.badlogic.gdx.utils.Array as GdxArray

@@ -3,8 +3,6 @@ package mati.vamps.weapons
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Array
 import mati.vamps.players.Player
-import mati.vamps.players.UpgradeType
-import mati.vamps.players.WeaponUpgradeInfo
 import mati.vamps.weapons.projectiles.ProjectileFactory
 
 class Holster(val projectileFactory: ProjectileFactory) {

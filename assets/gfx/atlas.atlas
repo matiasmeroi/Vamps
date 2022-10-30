@@ -78,23 +78,30 @@ items/whip
   orig: 15, 14
   offset: 0, 0
   index: -1
-items/holy_water
+items/magic_bullet
   rotate: false
   xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+items/holy_water
+  rotate: false
+  xy: 44, 45
   size: 14, 16
   orig: 14, 16
   offset: 0, 0
   index: -1
 items/knife
   rotate: false
-  xy: 44, 52
+  xy: 131, 106
   size: 16, 9
   orig: 16, 9
   offset: 0, 0
   index: -1
 items/diamond
   rotate: false
-  xy: 131, 103
+  xy: 174, 147
   size: 9, 12
   orig: 9, 12
   offset: 0, 0
@@ -135,5 +142,19 @@ players/greg
   xy: 1, 1
   size: 36, 36
   orig: 36, 36
+  offset: 0, 0
+  index: -1
+players/cosmo
+  rotate: false
+  xy: 39, 6
+  size: 27, 31
+  orig: 27, 31
+  offset: 0, 0
+  index: -1
+players/wanda
+  rotate: false
+  xy: 81, 29
+  size: 23, 32
+  orig: 23, 32
   offset: 0, 0
   index: -1

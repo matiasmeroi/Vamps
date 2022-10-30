@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -26,7 +27,7 @@ import mati.vamps.particles.DmgParticle
 import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
-import mati.vamps.players.WeaponUpgradeInfo
+import mati.vamps.weapons.WeaponUpgradeInfo
 import mati.vamps.ui.GameTimer
 import mati.vamps.ui.GenericListSelector
 import mati.vamps.ui.UIWindowsManager
@@ -158,6 +159,8 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
                 act.drawColRect()
             }
         }
+
+        player.drawPickUpRect()
 
         Vamps.sr().end()
     }
