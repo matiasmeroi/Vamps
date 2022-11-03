@@ -27,6 +27,7 @@ import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
 import mati.vamps.WeaponUpgradeInfo
+import mati.vamps.items.ItemEffect
 import mati.vamps.ui.GameTimer
 import mati.vamps.ui.GenericListSelector
 import mati.vamps.ui.UIWindowsManager
@@ -129,6 +130,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
             val e = enemyFactory.create(EnemyType.BAT_MEDIUM)
             e.setPosition(stg.x, stg.y)
             mainStage.addActor(e)
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+            EventManager.announceNot2Enemies(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(ItemEffect.GAIN_XP_100))
         }
 
         holster.update(player)
