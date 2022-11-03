@@ -15,15 +15,18 @@ abstract class Weapon (val projectileFactory: ProjectileFactory) {
         val TAG = Weapon::class.java.getSimpleName()
 
         fun createByType(type: WeaponType, projectileFactory: ProjectileFactory) : Weapon {
-            when(type) {
+            return when(type) {
                 WeaponType.NONE -> error( "Invalid type")
-                WeaponType.KNIVES -> return Knives(projectileFactory)
-                WeaponType.GARLIC -> return Garlic(projectileFactory)
-                WeaponType.WHIP -> return Whip(projectileFactory)
-                WeaponType.HOLY_WATER -> return HolyWater(projectileFactory)
-                WeaponType.MAGIC_WAND -> return MagicWand(projectileFactory)
+                WeaponType.KNIVES -> Knives(projectileFactory)
+                WeaponType.GARLIC -> Garlic(projectileFactory)
+                WeaponType.WHIP -> Whip(projectileFactory)
+                WeaponType.HOLY_WATER -> HolyWater(projectileFactory)
+                WeaponType.MAGIC_WAND -> MagicWand(projectileFactory)
+                WeaponType.UNHOLY_BIBLE -> UnholyBible(projectileFactory)
             }
         }
+
+
     }
 
     protected var info: WeaponInfo = WeaponInfo()
@@ -50,7 +53,7 @@ abstract class Weapon (val projectileFactory: ProjectileFactory) {
         }
 
         for(pr in projectiles) {
-            pr.update(info.area)
+            pr.update(info.area, info.speed)
         }
 
         cooldownTimer.update(info.coolDown)
@@ -88,8 +91,8 @@ abstract class Weapon (val projectileFactory: ProjectileFactory) {
         return res
     }
 
-    fun getDmg() : Float {
-        return (info.minDmg + Utils.r.nextInt((info.maxDmg - info.minDmg).toInt())) * info.strength
+    fun getDmg(player: Player) : Float {
+        return (info.minDmg + Utils.r.nextInt((info.maxDmg - info.minDmg).toInt())) * info.strength * player.getMight()
     }
 
     fun getName(): String { return info.name }

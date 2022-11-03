@@ -46,7 +46,7 @@ class HolyWaterBottle(val playerPos: Vector2, val target: Vector2) : Projectile(
     override fun onEnemyHit(enemy: Enemy) {
     }
 
-    override fun onUpdate(areaMultiplier: Float) {
+    override fun onUpdate(areaMultiplier: Float, speedMultiplier: Float) {
         when(state) {
             State.THROWING -> {
                 if(Vector2.dst(bottlePosition.x, bottlePosition.y, target.x, target.y) <= 30) {

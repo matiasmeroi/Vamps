@@ -1,6 +1,5 @@
 package mati.vamps.weapons.projectiles
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 import mati.vamps.utils.Utils
@@ -41,10 +40,10 @@ class ThrowableProjectile(private var dir: Vector2, val customTarget: Boolean = 
         hitsLeft--
     }
 
-    override fun onUpdate(areaMultiplier: Float) {
+    override fun onUpdate(areaMultiplier: Float, speedMultiplier: Float) {
         timer--
-        x += velocity.x
-        y += velocity.y
+        x += velocity.x * speedMultiplier
+        y += velocity.y * speedMultiplier
     }
 
     override fun draw(areaMultiplier: Float, batch: Batch) {

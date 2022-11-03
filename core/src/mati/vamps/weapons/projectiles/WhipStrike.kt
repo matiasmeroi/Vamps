@@ -1,7 +1,6 @@
 package mati.vamps.weapons.projectiles
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import mati.vamps.Vamps
 import mati.vamps.enemies.Enemy
 
 class WhipStrike: Projectile() {
@@ -24,7 +23,7 @@ class WhipStrike: Projectile() {
 
     }
 
-    override fun onUpdate(areaMultiplier: Float) {
+    override fun onUpdate(areaMultiplier: Float, speedMultiplier: Float) {
         timer--
     }
 

@@ -16,7 +16,6 @@ class Knives(factory: ProjectileFactory): Weapon(factory) {
     private var addNewProjectileTimer = 0
     private var projectileIndex = 0
 
-
     override fun initialize() {
         info.type = WeaponType.KNIVES
         info.name = "Knives"

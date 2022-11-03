@@ -22,7 +22,8 @@ class WeaponInfo {
 
     var strength = 1f
     var area = 1f
-    var coolDown = 1f // > => faster
+    var speed = 1f
+    var coolDown = 1f // ++ => faster
 
     var minDmg = 1f
     var maxDmg = 2f
@@ -56,6 +57,10 @@ class WeaponInfo {
                 coolDown *= 1.08f
             LevelUpEffect.REDUCE_COOLDOWN_20 ->
                 coolDown *= 1.2f
+            LevelUpEffect.INCREASE_SPEED_10 ->
+                speed *= 1.1f
+            LevelUpEffect.INCREASE_SPEED_20 ->
+                speed *= 1.2f
         }
     }
 

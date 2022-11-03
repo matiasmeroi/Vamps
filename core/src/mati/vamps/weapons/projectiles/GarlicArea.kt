@@ -1,7 +1,6 @@
 package mati.vamps.weapons.projectiles
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import mati.vamps.Vamps
 import mati.vamps.enemies.Enemy
 
 class GarlicArea : Projectile() {
@@ -22,9 +21,9 @@ class GarlicArea : Projectile() {
 
     }
 
-    override fun onUpdate(areaMultiplier: Float) {
+    override fun onUpdate(areaMultiplier: Float, speedMultiplier: Float) {
         timer++
-        if((timer % 30) == 0) dealingDmg = !dealingDmg
+        if((timer % 10) == 0) dealingDmg = !dealingDmg
     }
 
     override fun draw(areaMultiplier: Float, batch: Batch) {

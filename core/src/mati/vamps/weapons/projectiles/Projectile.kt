@@ -14,7 +14,8 @@ abstract class Projectile : Entity() {
         GARLIC,
         WHIP,
         HOLY_WATER,
-        MAGIC_BULLET
+        MAGIC_BULLET,
+        BIBLE
     }
 
     companion object {
@@ -66,7 +67,7 @@ abstract class Projectile : Entity() {
         return false
     }
 
-    fun update(areaMultiplier: Float) {
+    fun update(areaMultiplier: Float, speedMultiplier: Float) {
         val iter = timeOuts.keys()
         while(iter.hasNext) {
             val key = iter.next()
@@ -78,9 +79,9 @@ abstract class Projectile : Entity() {
             else timeOuts.put(key, t)
         }
 
-        onUpdate(areaMultiplier)
+        onUpdate(areaMultiplier, speedMultiplier)
     }
-    abstract fun onUpdate(areaMultiplier: Float)
+    abstract fun onUpdate(areaMultiplier: Float, speedMultiplier: Float)
     abstract fun draw(areaMultiplier: Float, batch: Batch)
 
 
