@@ -41,6 +41,8 @@ class XpHandler : Table(), EventManager.VEventListener {
         }
     }
 
+    fun getCurrentLevel() : Int { return level }
+
     private fun calcXpToNext() {
         xpToNext = level * 50
     }
