@@ -108,8 +108,9 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
             val jy = Utils.json.toJson(y)
             EventManager.announce2Enemies(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
         }
-        if((Gdx.graphics.frameId.toInt() % Gdx.graphics.framesPerSecond) == 0) {
 
+        if(Gdx.graphics.framesPerSecond != 0 && (Gdx.graphics.frameId.toInt() % Gdx.graphics.framesPerSecond) == 0) {
+            health = min((info as PlayerInfo).maxHealth, health + (info as PlayerInfo).recovery)
         }
     }
 
