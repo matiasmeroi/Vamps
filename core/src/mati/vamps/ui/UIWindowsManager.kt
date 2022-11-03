@@ -3,7 +3,11 @@ package mati.vamps.ui
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.kotcrab.vis.ui.widget.VisWindow
-import mati.vamps.weapons.WeaponUpgradeInfo
+import mati.vamps.PlayerUpgradeInfo
+import mati.vamps.Upgrade
+import mati.vamps.WeaponUpgradeInfo
+import mati.vamps.generateUpgrades
+import mati.vamps.players.PlayerFactory
 import mati.vamps.utils.Utils
 import mati.vamps.weapons.Holster
 import com.badlogic.gdx.utils.Array as GdxArray
@@ -14,7 +18,7 @@ class UIWindowsManager(val stage: Stage) {
         fun update()
     }
 
-    val upgradeSelectionUI = GenericListSelector<WeaponUpgradeInfo>("Select Upgrade")
+    val upgradeSelectionUI = GenericListSelector<Upgrade>("Select Upgrade")
     private val allWindows = arrayOf(upgradeSelectionUI)
 
     fun initialize() {
@@ -30,18 +34,26 @@ class UIWindowsManager(val stage: Stage) {
         return false
     }
 
-    fun showUpgradeWindow(holster: Holster) : Boolean {
-        val upgradesAvailable = holster.getWeaponUpgradesAvailable()
+    fun showUpgradeWindow(currentLevel: Int, holster: Holster) : Boolean {
+//        val upgradesAvailable = holster.getWeaponUpgradesAvailable()
+//
+//        for(playerUpgrade in PlayerFactory.getUpgradesAvailable()) {
+//            upgradesAvailable.add(playerUpgrade)
+//        }
+
+        val upgradesAvailable = generateUpgrades(currentLevel, holster)
 
         if(upgradesAvailable.size == 0) return false
 
-        val givenOptions = GdxArray<GenericListSelector.Option<WeaponUpgradeInfo>>()
+        val givenOptions = GdxArray<GenericListSelector.Option<Upgrade>>()
 
         var added = 0
-        while(!upgradesAvailable.isEmpty && added < Utils.MAX_WEAPON_UPGRADES_OFFERED) {
+        while(!upgradesAvailable.isEmpty && added < Utils.MAX_UPGRADES_OFFERED) {
             val idx = Utils.r.nextInt(upgradesAvailable.size)
             val uv = upgradesAvailable[idx]
-            val opt = GenericListSelector.Option("${uv.upgradeType} -> ${uv.weaponType} -> ${uv.description}", uv)
+
+            val opt = GenericListSelector.Option(uv.description, uv)
+
             givenOptions.add(opt)
             upgradesAvailable.removeIndex(idx)
             added++
@@ -55,15 +67,8 @@ class UIWindowsManager(val stage: Stage) {
         return true
     }
 
-//    fun showUpgradeWindow(holster: Holster) {
-//        upgradeSelectionUI.createOptions(holster)
-//        upgradeSelectionUI.toFront()
-//        upgradeSelectionUI.isVisible = true
-//
-//        centerWindow(upgradeSelectionUI)
-//    }
 
-    fun centerWindow(window: VisWindow) {
+    private fun centerWindow(window: VisWindow) {
         window.setPosition(Gdx.graphics.width / 2  - window.width / 2, Gdx.graphics.height / 2  - window.height / 2)
     }
 
