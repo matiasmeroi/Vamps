@@ -39,6 +39,7 @@ class Knives(factory: ProjectileFactory): Weapon(factory) {
                 val pr = projectileFactory.create(Projectile.Type.KNIFE, player.getDir())
                 val pos = getPosForProjectileAroundPlayer(player, projectileIndex, info.numProjectiles, info.area * pr.width / 2)
                 addProjectile(pr)
+                pr.setPosition(pos.x, pos.y)
                 addNewProjectileTimer = addTimeSep
                 projectileIndex++
         }
