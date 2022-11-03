@@ -42,5 +42,15 @@
     "h": 16,
     "cw": 16,
     "ch": 16
+  },
+  {
+    "type": "BIBLE",
+    "texture": "items/bible",
+    "speed": 0.025,
+    "timeOnScreen": 400,
+    "w": 28,
+    "h": 28,
+    "cw": 28,
+    "ch": 28
   }
 ]

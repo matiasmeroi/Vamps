@@ -1,6 +1,7 @@
 package mati.vamps.weapons.projectiles
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ObjectMap
@@ -68,34 +69,26 @@ class ProjectileFactory() {
             player.y + Utils.r.nextInt(Gdx.graphics.height) - Gdx.graphics.height / 2)
     }
 
-    fun create(type: Projectile.Type, dir: Vector2 = Vector2(0f, 0f)) : Projectile{
-        when(type) {
+    fun create(type: Projectile.Type, dir: Vector2 = Vector2(0f, 0f), ang: Float = 0f, dist: Float = 0f) : Projectile{
+        val proj : Projectile = when(type) {
             Projectile.Type.NONE -> error("Invalid projectile type")
             Projectile.Type.KNIFE -> {
                 val p = ThrowableProjectile(dir)
-                val info = infoMap.get(type).copy()
-                p.initialize(info)
                 p.setPosition(player.x, player.y)
-                stage.addActor(p)
-                return p
+                p
             }
 
             Projectile.Type.GARLIC -> {
                 val p = GarlicArea()
-                val info = infoMap.get(type).copy()
-                p.initialize(info)
                 p.setPosition(player.x, player.y)
-                stage.addActor(p)
-                return p
+                p
             }
 
             Projectile.Type.WHIP -> {
                 val p = WhipStrike()
-                val info = infoMap.get(type).copy()
-                p.initialize(info)
-                stage.addActor(p)
-                return p
+                p
             }
+
             Projectile.Type.HOLY_WATER -> {
                 val target = getSomeEnemyOnScreen()
                 val targetPosition = Vector2()
@@ -106,22 +99,32 @@ class ProjectileFactory() {
 
                 val p = HolyWaterBottle(player.getPosition(), targetPosition)
                 p.setPosition(targetPosition.x, targetPosition.y)
-                val info = infoMap.get(type).copy()
-                p.initialize(info)
-                stage.addActor(p)
-                return p
+                p
             }
 
             Projectile.Type.MAGIC_BULLET -> {
                 val closestEnemyPosition = getClosestEnemy()?.getPosition() ?: generateRandomTarget()
                 val dir = closestEnemyPosition.sub(player.x, player.y).nor()
                 val p = ThrowableProjectile(dir, true)
-                val info = infoMap.get(type).copy()
-                p.initialize(info)
                 p.setPosition(player.x, player.y)
-                stage.addActor(p)
-                return p
+                p
+            }
+
+            Projectile.Type.BIBLE -> {
+                val pos = Vector2(player.x + MathUtils.sin(ang) * dist, player.y + MathUtils.sin(ang) * dist)
+                val p = Bible(ang, dist)
+                p.setPosition(pos.x, pos.y)
+                p
             }
         }
+
+        val info = infoMap.get(type).copy()
+        proj.initialize(info)
+        stage.addActor(proj)
+        return proj
     }
+
+
+
+
 }
