@@ -8,12 +8,14 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import mati.vamps.Entity
+import mati.vamps.PlayerUpgradeInfo
 import mati.vamps.utils.Utils
 import mati.vamps.Vamps
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 import mati.vamps.weapons.WeaponType
+import java.lang.Float.min
 
 class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
 
@@ -50,6 +52,15 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
     fun getItemPickUpRect(): Rectangle {
         val r = (info as PlayerInfo).pickupRadius
         return Rectangle(x - r / 2, y - r / 2, r, r)
+    }
+
+    fun applyUpgrade(upg: PlayerUpgradeInfo) {
+        PlayerFactory.applyUpgrade(upg.upgradeType, info as PlayerInfo)
+    }
+
+    fun addHealth(dHealth: Float) {
+        val new = Math.min((info as PlayerInfo).maxHealth, health + dHealth)
+        health = new
     }
 
     fun handleInput() {
@@ -97,6 +108,9 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
             val jy = Utils.json.toJson(y)
             EventManager.announce2Enemies(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
         }
+        if((Gdx.graphics.frameId.toInt() % Gdx.graphics.framesPerSecond) == 0) {
+
+        }
     }
 
     private fun drawHealthBar(batch: Batch?) {
@@ -134,5 +148,9 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
                 health -= dmgPerFrame
             }
         }
+    }
+
+    fun getMight(): Float {
+        return (info as PlayerInfo).might
     }
 }

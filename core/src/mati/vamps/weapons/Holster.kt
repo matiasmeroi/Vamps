@@ -2,6 +2,10 @@ package mati.vamps.weapons
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Array
+import mati.vamps.Upgrade
+import mati.vamps.UpgradeType
+import mati.vamps.WeaponUpgradeInfo
+import mati.vamps.WeaponUpgradeType
 import mati.vamps.players.Player
 import mati.vamps.weapons.projectiles.ProjectileFactory
 
@@ -30,20 +34,22 @@ class Holster(val projectileFactory: ProjectileFactory) {
         return weapons
     }
 
-    fun getWeaponUpgradesAvailable() : Array<WeaponUpgradeInfo> {
-        val res = Array<WeaponUpgradeInfo>()
+    fun getWeaponUpgradesAvailable() : Array<Upgrade> {
+        val res = Array<Upgrade>()
 
         val ownedTypes = Array<WeaponType>()
 
         for(w in weapons) {
             ownedTypes.add(w.getType())
             if(w.canLevelUp())
-                res.add(WeaponUpgradeInfo(w.getType(), UpgradeType.LEVEL_UP_WEAPON, w.getNextLevelDescription()))
+                res.add(WeaponUpgradeInfo(w.getType(), WeaponUpgradeType.LEVEL_UP_WEAPON,
+                    "Level up ${w.getName()}: ${w.getNextLevelDescription()}"))
         }
 
         for(t in WeaponType.values()) {
             if(t != WeaponType.NONE && !(t in ownedTypes)) {
-                res.add(WeaponUpgradeInfo(t, UpgradeType.ADD_WEAPON, t.description))
+                res.add(WeaponUpgradeInfo(t, WeaponUpgradeType.ADD_WEAPON,
+                    "Add Weapon ${t.name}: ${t.description}"))
             }
         }
 
@@ -52,10 +58,10 @@ class Holster(val projectileFactory: ProjectileFactory) {
 
     fun applyWeaponUpgrade(upg: WeaponUpgradeInfo) {
         when(upg.upgradeType) {
-            UpgradeType.ADD_WEAPON ->  {
+            WeaponUpgradeType.ADD_WEAPON ->  {
                 weapons.add(Weapon.createByType(upg.weaponType, projectileFactory))
             }
-            UpgradeType.LEVEL_UP_WEAPON -> {
+            WeaponUpgradeType.LEVEL_UP_WEAPON -> {
                 for(w in weapons) {
                     if(w.getType() == upg.weaponType) w.levelUp()
                 }
