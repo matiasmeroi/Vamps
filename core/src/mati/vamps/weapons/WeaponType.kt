@@ -6,5 +6,6 @@ enum class WeaponType(val description: String = "") {
     GARLIC(description = "Hurts nearby enemies"),
     WHIP(description = "Hits several enemies at a time"),
     HOLY_WATER(description = "Creates areas of damage"),
-    MAGIC_WAND(description = "Fires at the nearest enemy")
+    MAGIC_WAND(description = "Fires at the nearest enemy"),
+    UNHOLY_BIBLE(description = "Orbits around the player")
 }
