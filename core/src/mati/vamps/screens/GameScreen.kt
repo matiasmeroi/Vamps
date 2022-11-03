@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -27,7 +26,7 @@ import mati.vamps.particles.DmgParticle
 import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
-import mati.vamps.weapons.WeaponUpgradeInfo
+import mati.vamps.WeaponUpgradeInfo
 import mati.vamps.ui.GameTimer
 import mati.vamps.ui.GenericListSelector
 import mati.vamps.ui.UIWindowsManager
@@ -36,7 +35,7 @@ import mati.vamps.weapons.Holster
 import mati.vamps.weapons.projectiles.ProjectileFactory
 
 class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
-    GenericListSelector.Listener<WeaponUpgradeInfo> {
+    GenericListSelector.Listener<Upgrade> {
 
     val mainStage = Stage(
         FitViewport(Gdx.graphics.width + 0f, Gdx.graphics.height + 0f,
@@ -62,7 +61,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     private val xpHandler = XpHandler()
     private val uiWindowsManager = UIWindowsManager(uiStage)
 
-    private var playerType: PlayerType  = PlayerType.WANDA
+    private var playerType: PlayerType  = PlayerType.GREG
     private lateinit var player: Player
     private val holster = Holster(projectileFactory)
 
@@ -196,6 +195,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
     override fun resize(width: Int, height: Int) {
         mainStage.viewport.update(width, height)
+        uiStage.viewport.update(width, height)
     }
 
     override fun pause() {
@@ -212,6 +212,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
     override fun dispose() {
         mainStage.dispose()
+        uiStage.dispose()
     }
 
     override fun onVEvent(event: VEvent, params: String) {
@@ -240,7 +241,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
                 mainStage.addActor(par)
             }
             VEvent.NEXT_LEVEL -> {
-                uiWindowsManager.showUpgradeWindow(holster)
+                uiWindowsManager.showUpgradeWindow(xpHandler.getCurrentLevel(), holster)
             }
         }
     }
@@ -250,7 +251,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
     }
 
-    override fun onOptionSelected(option: WeaponUpgradeInfo) {
-        holster.applyWeaponUpgrade(option)
+    override fun onOptionSelected(option: Upgrade) {
+        if(option is WeaponUpgradeInfo)
+            holster.applyWeaponUpgrade(option)
+        else if(option is PlayerUpgradeInfo)
+            player.applyUpgrade(option)
     }
 }
