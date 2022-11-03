@@ -4,9 +4,8 @@ import kotlin.math.max
 
 class CooldownTimer(val listener: Weapon) {
 
-    companion object {
-        const val MAX_TIMER = 100f
-    }
+    private var MAX_TIMER = 100f
+
 
     protected var timer = 0f
 
@@ -18,5 +17,7 @@ class CooldownTimer(val listener: Weapon) {
             timer = MAX_TIMER
         }
     }
+
+    fun setMaxTimer(i: Float) { MAX_TIMER = i }
 
 }
