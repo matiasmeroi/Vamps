@@ -92,16 +92,23 @@ items/holy_water
   orig: 14, 16
   offset: 0, 0
   index: -1
+items/bible
+  rotate: false
+  xy: 131, 100
+  size: 10, 15
+  orig: 10, 15
+  offset: 0, 0
+  index: -1
 items/knife
   rotate: false
-  xy: 131, 106
+  xy: 174, 150
   size: 16, 9
   orig: 16, 9
   offset: 0, 0
   index: -1
 items/diamond
   rotate: false
-  xy: 174, 147
+  xy: 197, 169
   size: 9, 12
   orig: 9, 12
   offset: 0, 0
