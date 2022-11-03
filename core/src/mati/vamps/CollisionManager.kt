@@ -21,7 +21,7 @@ class CollisionManager {
     fun run(player: Player, enemyList: GdxArray<Enemy>, itemList: GdxArray<Item>, holster: Holster) {
         separateEnemies(enemyList)
         player2enemy(player, enemyList)
-        weapon2enemy(holster, enemyList)
+        weapon2enemy(player, holster, enemyList)
         player2item(player, itemList)
     }
 
@@ -70,7 +70,7 @@ class CollisionManager {
         }
     }
 
-    private fun weapon2enemy(holster: Holster, enemyList: Array<Enemy>) {
+    private fun weapon2enemy(player: Player, holster: Holster, enemyList: Array<Enemy>) {
         val j = Utils.json
         val weapons = holster.getWeaponList()
         val enemyIter = enemyList.iterator()
@@ -87,7 +87,7 @@ class CollisionManager {
 
                         pr.onEnemyHit(enemy)
                         if(w.appliesKnockback()) enemy.applyKnockback(w.getKnockback())
-                        val dmg = w.getDmg()
+                        val dmg = w.getDmg(player)
                         enemy.dealDmg(dmg)
 
                         EventManager.announceNot2Enemies(VEvent.ENEMY_HIT,
