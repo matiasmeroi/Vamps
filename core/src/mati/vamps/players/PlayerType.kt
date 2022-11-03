@@ -4,5 +4,6 @@ enum class PlayerType {
     NONE,
     GREG,
     COSMO,
-    WANDA
+    WANDA,
+    JULIUS
 }

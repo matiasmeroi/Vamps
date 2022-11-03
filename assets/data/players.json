@@ -19,5 +19,12 @@
     "initialWeapon": "WHIP",
     "type": "WANDA",
     "texture": "players/wanda"
+  },
+  {
+    "name": "Julius",
+    "description": "Default settings",
+    "initialWeapon": "GARLIC",
+    "type": "JULIUS",
+    "texture": "players/wanda"
   }
 ]
