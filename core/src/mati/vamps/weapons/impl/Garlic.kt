@@ -14,7 +14,7 @@ import mati.vamps.weapons.projectiles.ProjectileFactory
 
 class Garlic(factory: ProjectileFactory) : Weapon(factory) {
 
-    lateinit var projectile: Projectile
+    var projectile: Projectile? = null
 
     override fun initialize() {
         info.name = "Garlic"
@@ -30,8 +30,6 @@ class Garlic(factory: ProjectileFactory) : Weapon(factory) {
         info.levelUpEffects.put(4, arrayOf(LevelUpEffect.INCREASE_AREA_20))
         info.levelUpEffects.put(5, arrayOf(LevelUpEffect.INCREASE_STRENGTH_30))
 
-        projectile = projectileFactory.create(Projectile.Type.GARLIC)
-        this.addProjectile(projectile)
     }
 
     override fun onTimerUp() {
@@ -39,7 +37,12 @@ class Garlic(factory: ProjectileFactory) : Weapon(factory) {
 
 
     override fun onUpdate(player: Player) {
-        projectile.setPosition(player.x, player.y)
+        if(projectile == null) {
+            projectile = projectileFactory.create(Projectile.Type.GARLIC)
+            this.addProjectile(projectile!!)
+        }
+
+        projectile!!.setPosition(player.x, player.y)
 
         if(canLevelUp() && Gdx.input.isKeyJustPressed(Input.Keys.I)) levelUp()
     }
