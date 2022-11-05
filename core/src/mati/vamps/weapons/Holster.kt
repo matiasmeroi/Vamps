@@ -12,7 +12,6 @@ import mati.vamps.weapons.projectiles.ProjectileFactory
 class Holster(val projectileFactory: ProjectileFactory) {
 
     private var weapons = Array<Weapon>()
-
     fun add(w: Weapon) {
         weapons.add(w)
     }
@@ -32,6 +31,14 @@ class Holster(val projectileFactory: ProjectileFactory) {
 
     fun getWeaponList() : Array<Weapon> {
         return weapons
+    }
+
+    fun getWeaponIconList() : Array<String> {
+        val result = Array<String>()
+        for(w in weapons) {
+            result.add(w.getIcon())
+        }
+        return result
     }
 
     fun getWeaponUpgradesAvailable() : Array<Upgrade> {

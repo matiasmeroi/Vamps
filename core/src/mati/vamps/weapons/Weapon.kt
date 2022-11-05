@@ -72,6 +72,10 @@ abstract class Weapon (val projectileFactory: ProjectileFactory) {
     }
     abstract fun onDraw(batch: Batch)
 
+    fun getIcon() : String {
+        return info.icon
+    }
+
     fun canLevelUp() : Boolean {
         return (info.level+1) in info.levelUpEffects.keys()
     }
