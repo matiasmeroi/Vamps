@@ -9,7 +9,11 @@ enum class ItemEffect {
 
 
     HEALTH_UP_30,
-    HEALTH_MAX
+    HEALTH_MAX,
+
+
+    COIN_1,
+    COIN_10
 
 
 }

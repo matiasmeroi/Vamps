@@ -7,7 +7,8 @@ class Item : Entity() {
 
     enum class Type {
         NONE,
-        DIAMOND_BLUE_10
+        DIAMOND_BLUE_10,
+        COIN
     }
 
     fun onPickUpEffect() : ItemEffect {

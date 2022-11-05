@@ -38,13 +38,10 @@ class ItemFactory(val stage: Stage) : EventManager.VEventListener {
 
     private fun getOnKillItem(): Item {
         val r = Utils.r.nextInt(10000)
-//        if(r < 100) {
-//            //specialItem
-//        } else {
         val item = Item()
-        item.initialize(infoMap.get(Item.Type.DIAMOND_BLUE_10).copy())
+        if(r < 1000) item.initialize(infoMap.get(Item.Type.COIN).copy())
+        else item.initialize(infoMap.get(Item.Type.DIAMOND_BLUE_10).copy())
         return item
-//        }
     }
 
 

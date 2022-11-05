@@ -7,5 +7,14 @@
     "h": 20,
     "cw": 16,
     "ch": 20
+  },
+  {
+    "type": "COIN",
+    "effect": "COIN_1",
+    "texture": "items/coin",
+    "w": 16,
+    "h": 20,
+    "cw": 16,
+    "ch": 20
   }
 ]
