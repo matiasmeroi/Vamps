@@ -14,6 +14,7 @@ import mati.vamps.Vamps
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.power_ups.PowerUps
 import mati.vamps.weapons.WeaponType
 import java.lang.Float.min
 
@@ -151,6 +152,10 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
             VEvent.PLAYER_ENEMY_COLLISION -> {
                 val dmgPerFrame = Utils.json.fromJson(Float::class.java, params)
                 health -= dmgPerFrame
+            }
+            VEvent.POWER_UP_ACTIVATED -> {
+                val pu = Utils.json.fromJson(PowerUps.PowerUp::class.java, params)
+                pu.applyFun(this.info as PlayerInfo)
             }
         }
     }
