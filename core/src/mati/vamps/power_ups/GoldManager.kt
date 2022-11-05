@@ -15,6 +15,10 @@ class GoldManager: EventManager.VEventListener, ProfileManager.ProfileListener {
         ProfileManager.addListener(this)
     }
 
+    fun has(amount: Int) : Boolean { return gold >= amount }
+    fun spend(amount: Int) {
+        gold -= amount
+    }
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
