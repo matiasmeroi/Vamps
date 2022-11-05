@@ -55,7 +55,11 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
     }
 
     fun applyUpgrade(upg: PlayerUpgradeInfo) {
-        PlayerFactory.applyUpgrade(upg.upgradeType, info as PlayerInfo)
+        upg.upgradeType.applyFun(this.info as PlayerInfo)
+    }
+
+    fun getHealth() : Float {
+        return health
     }
 
     fun addHealth(dHealth: Float) {
