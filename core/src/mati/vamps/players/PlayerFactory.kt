@@ -23,28 +23,6 @@ class PlayerFactory {
             return str
         }
 
-        fun applyUpgrade(upgType: PlayerUpgradeType, info: PlayerInfo) {
-            Gdx.app.log(TAG, "Applying <${upgType}> to ${info.name}")
-            when(upgType) {
-                PlayerUpgradeType.INCREASE_MAX_HEALTH_20 ->
-                    info.maxHealth *= 1.2f
-//                PlayerUpgradeType.INCREASE_MAX_HEALTH_30 ->
-//                    info.maxHealth *= 1.3f
-                PlayerUpgradeType.INCREASE_ARMOR_10 ->
-                    info.armor *= 1.1f
-//                PlayerUpgradeType.INCREASE_ARMOR_20 ->
-//                    info.armor *= 1.2f
-//                PlayerUpgradeType.INCREASE_ARMOR_30 ->
-//                    info.armor *= 1.3f
-                PlayerUpgradeType.INCREASE_PICKUP_RADIUS ->
-                    info.pickupRadius *= 1.5f
-                PlayerUpgradeType.INCREASE_RECOVERY_02 ->
-                    info.recovery += 0.2f
-                PlayerUpgradeType.INCREASE_MIGHT_10 ->
-                    info.might *= 1.1f
-            }
-        }
-
         fun getUpgradesAvailable(): GdxArray<Upgrade> {
             val res = GdxArray<Upgrade>()
             for(type in PlayerUpgradeType.values()) {
