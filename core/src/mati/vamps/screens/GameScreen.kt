@@ -107,6 +107,11 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     }
 
     private fun update() {
+        if(player.getHealth() <= 0) {
+            Vamps.changeScreen(Vamps.ScreenType.DEAD_SCREEN)
+            return
+        }
+
         player.handleInput()
 
         val mx = Gdx.input.getX()
