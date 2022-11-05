@@ -8,9 +8,12 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.ObjectMap
 import com.kotcrab.vis.ui.VisUI
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
+import mati.vamps.power_ups.GoldManager
+import mati.vamps.screens.DeadScreen
 import mati.vamps.utils.Utils.ATLAS_PATH
 import mati.vamps.screens.GameScreen
 import mati.vamps.screens.MenuScreen
@@ -28,12 +31,16 @@ object Vamps : Game(), EventManager.VEventListener {
     fun assets() : AssetManager { return assets }
     fun atlas() : TextureAtlas { return assets.get(ATLAS_PATH, TextureAtlas::class.java) }
 
-    private lateinit var mainMenuScreen: MenuScreen
+    fun goldMgr() : GoldManager { return goldManager }
 
+    private lateinit var goldManager: GoldManager
+
+    private lateinit var mainMenuScreen: MenuScreen
     private lateinit var gameScreen: GameScreen
+    private lateinit var deadScreen: DeadScreen
 
     enum class ScreenType {
-        MAIN_MENU_SCEEN, GAME_SCREEN
+        MAIN_MENU_SCEEN, GAME_SCREEN, DEAD_SCREEN
     }
 
     override fun create() {
@@ -48,19 +55,24 @@ object Vamps : Game(), EventManager.VEventListener {
 
         assets.finishLoading()
 
+        goldManager = GoldManager()
         mainMenuScreen = MenuScreen()
         gameScreen = GameScreen()
+        deadScreen = DeadScreen()
 
         EventManager.subscribe(this)
+        ProfileManager.load<ObjectMap<String, Object>>()
 
         setScreen(mainMenuScreen)
     }
 
-    fun getScreenByType(screenType: ScreenType?): Screen {
+    fun changeScreen(screenType: ScreenType) { setScreen(getScreenByType(screenType)) }
+
+    private fun getScreenByType(screenType: ScreenType): Screen {
         return when (screenType) {
             ScreenType.MAIN_MENU_SCEEN -> mainMenuScreen
             ScreenType.GAME_SCREEN -> gameScreen
-            else -> gameScreen
+            ScreenType.DEAD_SCREEN -> deadScreen
         }
     }
 
