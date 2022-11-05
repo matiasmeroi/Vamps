@@ -19,6 +19,7 @@ class Garlic(factory: ProjectileFactory) : Weapon(factory) {
     override fun initialize() {
         info.name = "Garlic"
         info.type = WeaponType.GARLIC
+        info.icon = "items/garlic"
 
         info.minDmg = 1f
         info.maxDmg = 5f

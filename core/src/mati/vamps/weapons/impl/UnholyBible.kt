@@ -19,6 +19,7 @@ class UnholyBible(fact: ProjectileFactory) : Weapon(fact) {
 
         info.type = WeaponType.UNHOLY_BIBLE
         info.name = "Unholy Bible"
+        info.icon = "items/bible"
 
         info.levelUpEffects.put(2, arrayOf(LevelUpEffect.ADD_PROJECTILE))
         info.levelUpEffects.put(3, arrayOf(LevelUpEffect.ADD_PROJECTILE))

@@ -16,6 +16,7 @@ class MagicWand(factory: ProjectileFactory) : Weapon(factory), SeparationTimer.L
     override fun initialize() {
         info.type = WeaponType.MAGIC_WAND
         info.name = "Magic Wand"
+        info.icon = "items/magic_bullet"
 
         info.minDmg = 2f
         info.maxDmg = 10f

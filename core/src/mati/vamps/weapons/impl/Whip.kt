@@ -19,6 +19,7 @@ class Whip(factory: ProjectileFactory): Weapon(factory), SeparationTimer.Listene
     override fun initialize() {
         info.type = WeaponType.WHIP
         info.name = "Whip"
+        info.icon = "items/whip"
 
         info.minDmg = 1f
         info.maxDmg = 10f

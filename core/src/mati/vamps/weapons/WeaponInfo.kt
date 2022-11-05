@@ -13,6 +13,7 @@ class WeaponInfo {
 
     var type: WeaponType = WeaponType.NONE
     var name = "NoName"
+    var icon: String = "NoIconSet"
 
     var level: Int = 1
     var numProjectiles: Int = 1

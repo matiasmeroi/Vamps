@@ -19,6 +19,8 @@ class Knives(factory: ProjectileFactory): Weapon(factory) {
     override fun initialize() {
         info.type = WeaponType.KNIVES
         info.name = "Knives"
+        info.icon = "items/knife"
+
         info.minDmg = 1f
         info.maxDmg = 10f
 
