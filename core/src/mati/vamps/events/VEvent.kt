@@ -19,5 +19,8 @@ enum class VEvent  {
 
     GAME_START,
 
+    BUY_POWER_UP,
+    REFUND_POWER_UPS,
+    POWER_UP_ACTIVATED
 
 }
