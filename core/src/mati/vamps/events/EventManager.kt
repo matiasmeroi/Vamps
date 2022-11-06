@@ -11,36 +11,32 @@ object EventManager {
         fun onVEvent(event: VEvent, params: String)
     }
 
-    private val listeners = Array<VEventListener>()
-    private val enemyListeners = Array<Enemy>()
+    private val notEnemyBuffer = EventQueue()
+    private val enemyBuffer = EventQueue()
 
-    fun announceNot2Enemies(globalEvent: VEvent, params: String) {
-        for(l in listeners) {
-            l.onVEvent(globalEvent, params)
-        }
+    fun announceNot2Enemies(event: VEvent, params: String) {
+        notEnemyBuffer.addMsg(event, params)
     }
 
-    fun announce2Enemies(globalEvent: VEvent, params: String) {
-        for(l in enemyListeners) {
-            l.onVEvent(globalEvent, params)
-        }
+    fun announce2Enemies(event: VEvent, params: String) {
+        enemyBuffer.addMsg(event, params)
     }
 
-    fun announceAll(globalEvent: VEvent, params: String) {
-        announce2Enemies(globalEvent, params)
-        announceNot2Enemies(globalEvent, params)
+    fun announceAll(event: VEvent, params: String) {
+        announce2Enemies(event, params)
+        announceNot2Enemies(event, params)
     }
 
     fun subscribe(l: VEventListener) {
-        listeners.add(l)
+        notEnemyBuffer.subscribe(l)
     }
 
     fun subscribeAsEnemy(e: Enemy) {
-        enemyListeners.add(e)
+        enemyBuffer.subscribe(e)
     }
 
     fun unsubscribeEnemy(e: Enemy) {
-        enemyListeners.removeValue(e, true)
+        enemyBuffer.unsubscribe(e)
     }
 
 
