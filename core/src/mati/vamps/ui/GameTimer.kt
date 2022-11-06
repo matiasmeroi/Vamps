@@ -26,7 +26,6 @@ class GameTimer: VisLabel() {
         setColor(1f, 1f, 1f, 1f)
         setFontScale(2.5f)
         pack()
-        this.setPosition(Gdx.graphics.width / 2f - 45, Gdx.graphics.height - 100f)
     }
 
     fun addListener(l: Listener) {
@@ -35,6 +34,9 @@ class GameTimer: VisLabel() {
 
     override fun act(delta: Float) {
         super.act(delta)
+
+        this.setPosition(stage.viewport.worldWidth / 2f - 45, stage.viewport.worldHeight - 100f)
+
         seconds += Gdx.graphics.deltaTime
 
         val lastMinUnit = minUnit
