@@ -61,7 +61,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     private val projectileFactory = ProjectileFactory()
 
     private val collisionManager = CollisionManager()
-    private var xpHandler = XpHandler()
+    private var xpHandler = XpHandler(uiStage)
     private var killCounter = KillCounter()
     private val uiWindowsManager = UIWindowsManager(uiStage)
 
@@ -102,10 +102,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         enemyFactory.clear()
 
         killCounter = KillCounter()
-        xpHandler = XpHandler()
+        xpHandler = XpHandler(uiStage)
         holster = Holster(projectileFactory)
 
-        playerType = PlayerType.GREG
+//        playerType = PlayerType.GREG
     }
 
     private fun initialize() {
@@ -120,7 +120,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         uiWindowsManager.initialize()
         uiWindowsManager.upgradeSelectionUI.listener = this
 
-        statsUI.initialize(holster)
+        statsUI.initialize(killCounter, holster)
 
         mainStage.addActor(player)
 
@@ -227,6 +227,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
         debugDraw()
 
+        if(player.isDead()) {
+            EventManager.announceNot2Enemies(VEvent.GAME_END, "")
+        }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit()
         }
@@ -281,6 +285,11 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
             VEvent.NEXT_LEVEL -> {
                 uiWindowsManager.showUpgradeWindow(xpHandler.getCurrentLevel(), holster)
             }
+            VEvent.GAME_END -> {
+                EventManager.announceNot2Enemies(VEvent.ROUND_TIME, "${gameTimer.getMinutes()}" + PARAM_SEP + "${gameTimer.getSeconds()}")
+                EventManager.announceNot2Enemies(VEvent.ROUND_KILLS, "${killCounter.getCount()}")
+            }
+
         }
     }
 
