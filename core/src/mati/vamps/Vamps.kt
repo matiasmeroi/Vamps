@@ -13,10 +13,12 @@ import com.kotcrab.vis.ui.VisUI
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 import mati.vamps.power_ups.GoldManager
+import mati.vamps.power_ups.PowerUps
 import mati.vamps.screens.DeadScreen
 import mati.vamps.utils.Utils.ATLAS_PATH
 import mati.vamps.screens.GameScreen
 import mati.vamps.screens.MenuScreen
+import mati.vamps.screens.PowerUpScreen
 
 object Vamps : Game(), EventManager.VEventListener {
 
@@ -32,15 +34,18 @@ object Vamps : Game(), EventManager.VEventListener {
     fun atlas() : TextureAtlas { return assets.get(ATLAS_PATH, TextureAtlas::class.java) }
 
     fun goldMgr() : GoldManager { return goldManager }
+    fun puMgr() : PowerUps { return powerUpManager }
 
     private lateinit var goldManager: GoldManager
+    private lateinit var powerUpManager: PowerUps
 
     private lateinit var mainMenuScreen: MenuScreen
+    private lateinit var powerUpsMenu: PowerUpScreen
     private lateinit var gameScreen: GameScreen
     private lateinit var deadScreen: DeadScreen
 
     enum class ScreenType {
-        MAIN_MENU_SCEEN, GAME_SCREEN, DEAD_SCREEN
+        MAIN_MENU_SCEEN, GAME_SCREEN, DEAD_SCREEN, POWER_UP_MENU
     }
 
     override fun create() {
@@ -55,15 +60,20 @@ object Vamps : Game(), EventManager.VEventListener {
 
         assets.finishLoading()
 
+        EventManager.subscribe(this)
+
         goldManager = GoldManager()
+        powerUpManager = PowerUps()
+
         mainMenuScreen = MenuScreen()
+        powerUpsMenu = PowerUpScreen()
         gameScreen = GameScreen()
         deadScreen = DeadScreen()
 
-        EventManager.subscribe(this)
         ProfileManager.load<ObjectMap<String, Object>>()
 
         setScreen(mainMenuScreen)
+
     }
 
     fun changeScreen(screenType: ScreenType) { setScreen(getScreenByType(screenType)) }
@@ -73,6 +83,7 @@ object Vamps : Game(), EventManager.VEventListener {
             ScreenType.MAIN_MENU_SCEEN -> mainMenuScreen
             ScreenType.GAME_SCREEN -> gameScreen
             ScreenType.DEAD_SCREEN -> deadScreen
+            ScreenType.POWER_UP_MENU -> powerUpsMenu
         }
     }
 
@@ -85,7 +96,13 @@ object Vamps : Game(), EventManager.VEventListener {
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
             VEvent.GAME_START -> {
-                setScreen(getScreenByType(ScreenType.GAME_SCREEN))
+                changeScreen(ScreenType.GAME_SCREEN)
+            }
+            VEvent.GAME_END -> {
+                changeScreen(ScreenType.DEAD_SCREEN)
+            }
+            VEvent.RESET_GAME -> {
+                gameScreen.reset()
             }
         }
     }
