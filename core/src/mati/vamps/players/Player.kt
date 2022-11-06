@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.Stage
 import mati.vamps.Entity
 import mati.vamps.PlayerUpgradeInfo
@@ -152,6 +153,7 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
             VEvent.PLAYER_ENEMY_COLLISION -> {
                 val dmgPerFrame = Utils.json.fromJson(Float::class.java, params)
                 health -= dmgPerFrame
+                if(health <= 0) EventManager.announceNot2Enemies(VEvent.GAME_END, "")
             }
             VEvent.POWER_UP_ACTIVATED -> {
                 val pu = Utils.json.fromJson(PowerUps.PowerUp::class.java, params)
