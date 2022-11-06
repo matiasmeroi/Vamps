@@ -16,6 +16,7 @@ class HolyWater(factory: ProjectileFactory) : Weapon(factory), SeparationTimer.L
     override fun initialize() {
         info.name = "Holy Water"
         info.type = WeaponType.HOLY_WATER
+        info.icon = "items/holy_water"
 
         info.appliesKnockback = false
 
