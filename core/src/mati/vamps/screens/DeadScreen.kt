@@ -16,9 +16,10 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import mati.vamps.ProfileManager
 import mati.vamps.Vamps
 import mati.vamps.events.EventManager
+import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
 
-class DeadScreen : Screen {
+class DeadScreen : Screen, EventManager.VEventListener {
 
     val stage = Stage(
         FitViewport(
@@ -28,8 +29,9 @@ class DeadScreen : Screen {
     )
 
     private val table = Table()
-    private val timeLabel = VisLabel("")
-    private val goldLabel = VisLabel("")
+    private val timeLabel = VisLabel("Time: 00:00")
+    private val goldLabel = VisLabel("Gold: ${Vamps.goldMgr().earnedThisRound()}")
+    private val killLabels = VisLabel("Kills: 0")
     private val okButton = VisTextButton("Ok")
 
     init {
@@ -47,19 +49,30 @@ class DeadScreen : Screen {
         table.row()
         table.add(goldLabel)
         table.row()
+        table.add(killLabels)
+        table.row()
         table.add(okButton)
 
         stage.addActor(table)
+
+        EventManager.subscribe(this)
     }
 
     override fun show() {
         Vamps.multiplexer().addProcessor(stage)
         ProfileManager.save()
         EventManager.announceNot2Enemies(VEvent.RESET_GAME, "")
+        goldLabel.setText("Gold: ${Vamps.goldMgr().earnedThisRound()}")
     }
 
     override fun render(delta: Float) {
         ScreenUtils.clear(Color.BLACK)
+
+        Vamps.batch().begin()
+        val reg = Vamps.atlas().findRegion("items/game_over_msg")
+        val tw = reg.regionWidth
+        Vamps.batch().draw(reg, stage.viewport.worldWidth / 2 - tw  / 2f, stage.viewport.worldHeight - stage.viewport.worldHeight/ 4f)
+        Vamps.batch().end()
 
         stage.act()
         stage.draw()
@@ -81,5 +94,19 @@ class DeadScreen : Screen {
 
     override fun dispose() {
         stage.dispose()
+    }
+
+    override fun onVEvent(event: VEvent, params: String) {
+        when(event) {
+            VEvent.ROUND_TIME -> {
+                val p = params.split(PARAM_SEP)
+                val minutes = p[0]
+                val seconds = p[1]
+                timeLabel.setText("Time: $minutes:$seconds")
+            }
+            VEvent.ROUND_KILLS -> {
+                killLabels.setText("Kills: $params")
+            }
+        }
     }
 }
