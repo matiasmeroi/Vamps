@@ -32,7 +32,7 @@ class CollisionManager {
            v.set(player.x, player.y)
            v.sub(enemy.getPosition())
 
-           if(v.len2() < 100 && player.getRect().overlaps(enemy.getRect())) {
+           if(player.getColRect().overlaps(enemy.getColRect())) {
                enemy.stop()
                EventManager.announceNot2Enemies(VEvent.PLAYER_ENEMY_COLLISION, Utils.json.toJson(enemy.getDmgPerFrame()))
            }
