@@ -69,6 +69,8 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
         health = new
     }
 
+    fun isDead() : Boolean { return health <= 0 }
+
     fun handleInput() {
         var dx = 0f
         var dy = 0f
@@ -109,6 +111,7 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
 
     override fun act(delta: Float) {
         super.act(delta)
+
         if((Gdx.graphics.frameId.toInt() % 20) == 0) {
             val jx = Utils.json.toJson(x)
             val jy = Utils.json.toJson(y)
@@ -143,17 +146,11 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
     }
 
 
-
-
-
-
-
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
             VEvent.PLAYER_ENEMY_COLLISION -> {
                 val dmgPerFrame = Utils.json.fromJson(Float::class.java, params)
                 health -= dmgPerFrame
-                if(health <= 0) EventManager.announceNot2Enemies(VEvent.GAME_END, "")
             }
             VEvent.POWER_UP_ACTIVATED -> {
                 val pu = Utils.json.fromJson(PowerUps.PowerUp::class.java, params)
