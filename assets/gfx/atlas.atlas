@@ -31,91 +31,98 @@ filter: Nearest,Nearest
 repeat: none
 items/holy_water_circle
   rotate: false
-  xy: 1, 97
+  xy: 1, 111
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 items/whip_strike
   rotate: false
-  xy: 1, 63
+  xy: 1, 77
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 items/garlic_circle
   rotate: false
-  xy: 131, 161
+  xy: 131, 175
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 items/blood1
   rotate: false
-  xy: 1, 19
+  xy: 1, 33
   size: 41, 42
   orig: 41, 42
   offset: 0, 0
   index: -1
 items/blood2
   rotate: false
-  xy: 131, 117
+  xy: 131, 131
   size: 41, 42
   orig: 41, 42
   offset: 0, 0
   index: -1
 items/blood3
   rotate: false
-  xy: 197, 183
+  xy: 197, 197
   size: 41, 42
   orig: 41, 42
   offset: 0, 0
   index: -1
 items/whip
   rotate: false
-  xy: 240, 211
+  xy: 240, 225
   size: 15, 14
   orig: 15, 14
   offset: 0, 0
   index: -1
 items/magic_bullet
   rotate: false
-  xy: 1, 1
+  xy: 1, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 items/holy_water
   rotate: false
-  xy: 44, 45
+  xy: 44, 59
   size: 14, 16
   orig: 14, 16
   offset: 0, 0
   index: -1
 items/coin
   rotate: false
-  xy: 131, 101
+  xy: 131, 115
   size: 12, 14
   orig: 12, 14
   offset: 0, 0
   index: -1
 items/bible
   rotate: false
-  xy: 174, 144
+  xy: 174, 158
   size: 10, 15
   orig: 10, 15
   offset: 0, 0
   index: -1
 items/knife
   rotate: false
-  xy: 197, 172
+  xy: 197, 186
   size: 16, 9
   orig: 16, 9
   offset: 0, 0
   index: -1
+items/garlic
+  rotate: false
+  xy: 240, 212
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
 items/diamond
   rotate: false
-  xy: 240, 197
+  xy: 1, 1
   size: 9, 12
   orig: 9, 12
   offset: 0, 0
