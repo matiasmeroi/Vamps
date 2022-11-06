@@ -1,6 +1,7 @@
 package mati.vamps
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisProgressBar
@@ -8,8 +9,7 @@ import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
 import mati.vamps.items.ItemEffect
 import mati.vamps.utils.Utils
-
-class XpHandler : Table(), EventManager.VEventListener {
+class XpHandler(val mstage: Stage) : Table(), EventManager.VEventListener {
 
     private var level = 1
     private var xpToNext = 0
@@ -19,10 +19,10 @@ class XpHandler : Table(), EventManager.VEventListener {
     private val label = VisLabel("$level")
 
     init {
-        progressBar.setSize(Gdx.graphics.width- 20f, 30f)
-        progressBar.setPosition(10f, Gdx.graphics.height - progressBar.height)
+        progressBar.setSize(mstage.viewport.worldWidth - 20f, 30f)
+        progressBar.setPosition(10f, mstage.viewport.worldHeight - progressBar.height)
 
-        label.setPosition(Gdx.graphics.width - 40f, Gdx.graphics.height - progressBar.height + 3f)
+        label.setPosition(mstage.viewport.worldWidth - 40f, mstage.viewport.worldHeight - progressBar.height + 3f)
 
         this.addActor(progressBar)
         this.addActor(label)
