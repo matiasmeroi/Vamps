@@ -23,6 +23,9 @@ enum class VEvent  {
 
     BUY_POWER_UP,
     REFUND_POWER_UPS,
-    POWER_UP_ACTIVATED
+    POWER_UP_ACTIVATED,
+
+    ROUND_TIME,
+    ROUND_KILLS
 
 }
