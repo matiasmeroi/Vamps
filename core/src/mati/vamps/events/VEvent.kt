@@ -18,6 +18,8 @@ enum class VEvent  {
     ENEMY_OFF_SCREEN,
 
     GAME_START,
+    GAME_END,
+    RESET_GAME,
 
     BUY_POWER_UP,
     REFUND_POWER_UPS,
