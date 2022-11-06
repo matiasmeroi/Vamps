@@ -14,7 +14,6 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import mati.vamps.Vamps
 import mati.vamps.events.EventManager
 import mati.vamps.events.VEvent
-import mati.vamps.players.Player
 import mati.vamps.players.PlayerFactory
 import mati.vamps.players.PlayerType
 import mati.vamps.ui.GenericListSelector
@@ -35,6 +34,7 @@ class MenuScreen : Screen, GenericListSelector.Listener<PlayerType> {
     private val playButton = VisTextButton("Play")
     private val selectPlayerButton = VisTextButton("Select Player")
     private val playerSelectedLabel = VisLabel()
+    private val powerUpsButton = VisTextButton("PowerUps")
     private val exitButton = VisTextButton("Exit")
 
     private val playerSelectionWindow = GenericListSelector<PlayerType>("Select Player", true)
@@ -56,6 +56,12 @@ class MenuScreen : Screen, GenericListSelector.Listener<PlayerType> {
             }
         })
 
+        powerUpsButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Vamps.changeScreen(Vamps.ScreenType.POWER_UP_MENU)
+            }
+        })
+
         exitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Gdx.app.exit()
@@ -71,6 +77,8 @@ class MenuScreen : Screen, GenericListSelector.Listener<PlayerType> {
         table.row()
         table.add(playerSelectedLabel)
         table.add(selectPlayerButton)
+        table.row()
+        table.add(powerUpsButton)
         table.row()
         table.add(exitButton)
 
