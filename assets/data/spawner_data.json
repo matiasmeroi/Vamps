@@ -2,12 +2,8 @@
   { "minute": 0,
     "bag": [
       {
-        "num": 4,
-        "type": "BAT_MEDIUM"
-      },
-      {
         "num": 1,
-        "type": "SKELETON"
+        "type": "BAT_MEDIUM"
       }
     ]
   },
@@ -22,7 +18,7 @@
         "type": "SKELETON"
       },
       {
-        "num": 1,
+        "num": 4,
         "type": "BAT_MEDIUM"
       }
     ]
@@ -39,7 +35,7 @@
         "type": "ZOMBIE"
       },
       {
-        "num": 1,
+        "num": 3,
         "type": "BAT_MEDIUM"
       }
     ]
@@ -59,7 +55,7 @@
         "type": "ZOMBIE"
       },
       {
-        "num": 1,
+        "num": 2,
         "type": "BAT_MEDIUM"
       }
     ]
@@ -69,7 +65,7 @@
   { "minute": 4,
     "bag": [
       {
-        "num": 1,
+        "num": 3,
         "type": "SKELETON"
       },
       {

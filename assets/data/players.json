@@ -25,6 +25,6 @@
     "description": "Default settings",
     "initialWeapon": "GARLIC",
     "type": "JULIUS",
-    "texture": "players/wanda"
+    "texture": "players/julius"
   }
 ]
