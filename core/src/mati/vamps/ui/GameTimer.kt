@@ -26,7 +26,7 @@ class GameTimer: VisLabel() {
         setColor(1f, 1f, 1f, 1f)
         setFontScale(2.5f)
         pack()
-        this.setPosition(Gdx.graphics.width / 2f - 45, Gdx.graphics.height - 75f)
+        this.setPosition(Gdx.graphics.width / 2f - 45, Gdx.graphics.height - 100f)
     }
 
     fun addListener(l: Listener) {
