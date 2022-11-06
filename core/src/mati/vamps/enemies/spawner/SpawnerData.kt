@@ -8,6 +8,8 @@ class SpawnerData {
 
     companion object {
 
+        val TAG = SpawnerData::class.java.getSimpleName()
+
         const val INFO_FILE = "data/spawner_data.json"
 
         private val minutesMap = HashMap<Int, GdxArray<EnemyType>>()
@@ -27,7 +29,7 @@ class SpawnerData {
 
                 }
 
-                println("Loaded minute ${minProInfo.minute} for enemy spawner")
+                Gdx.app.log(TAG, "Loaded minute ${minProInfo.minute} for enemy spawner")
             }
 
         }
