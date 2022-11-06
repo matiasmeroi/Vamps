@@ -30,7 +30,9 @@ import mati.vamps.WeaponUpgradeInfo
 import mati.vamps.items.ItemEffect
 import mati.vamps.ui.GameTimer
 import mati.vamps.ui.GenericListSelector
+import mati.vamps.ui.StatsUI
 import mati.vamps.ui.UIWindowsManager
+import mati.vamps.utils.KillCounter
 import mati.vamps.utils.Utils
 import mati.vamps.weapons.Holster
 import mati.vamps.weapons.projectiles.ProjectileFactory
@@ -59,18 +61,21 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     private val projectileFactory = ProjectileFactory()
 
     private val collisionManager = CollisionManager()
-    private val xpHandler = XpHandler()
+    private var xpHandler = XpHandler()
+    private var killCounter = KillCounter()
     private val uiWindowsManager = UIWindowsManager(uiStage)
 
     private var playerType: PlayerType  = PlayerType.GREG
     private lateinit var player: Player
-    private val holster = Holster(projectileFactory)
+    private var holster = Holster(projectileFactory)
 
-    private val map = Map(mainStage)
+    private var map = Map(mainStage)
 
-    private val spawner = Spawner(gameTimer, enemyFactory, mainStage)
+    private var spawner = Spawner(gameTimer, enemyFactory, mainStage)
 
-    private var initilized = false
+    private val statsUI = StatsUI()
+
+    private var initialized = false
 
     init {
         EventManager.subscribe(this)
@@ -80,12 +85,34 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         itemFactory.load()
         projectileFactory.load()
         SpawnerData.load()
+
+        holster = Holster(projectileFactory)
+
+        map = Map(mainStage)
+
+        spawner = Spawner(gameTimer, enemyFactory, mainStage)
+
+        initialized = false
+    }
+
+    fun reset() {
+        mainStage.clear()
+        uiStage.clear()
+
+        enemyFactory.clear()
+
+        killCounter = KillCounter()
+        xpHandler = XpHandler()
+        holster = Holster(projectileFactory)
+
+        playerType = PlayerType.GREG
     }
 
     private fun initialize() {
         gameTimer.addListener(this)
 
         player = playerFactory.create(mainStage, playerType)
+        Vamps.puMgr().applyBought()
         holster.add(player.initialWeapon())
 
         projectileFactory.initialize(mainStage, player, enemyFactory.getOnScreenList())
@@ -93,13 +120,16 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         uiWindowsManager.initialize()
         uiWindowsManager.upgradeSelectionUI.listener = this
 
+        statsUI.initialize(holster)
+
         mainStage.addActor(player)
 
         uiStage.addActor(xpHandler)
         uiStage.addActor(gameTimer)
+        uiStage.addActor(statsUI)
 
         spawner.spawnAround(player.getPosition(), 700f, 30, EnemyType.BAT_MEDIUM)
-        initilized = true
+        initialized = true
     }
 
     override fun show() {
@@ -107,11 +137,6 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     }
 
     private fun update() {
-        if(player.getHealth() <= 0) {
-            Vamps.changeScreen(Vamps.ScreenType.DEAD_SCREEN)
-            return
-        }
-
         player.handleInput()
 
         val mx = Gdx.input.getX()
@@ -139,6 +164,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.L)) {
             EventManager.announceNot2Enemies(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(ItemEffect.GAIN_XP_100))
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            EventManager.announceNot2Enemies(VEvent.ITEM_EFFECT_ACTIVATED, Utils.json.toJson(ItemEffect.COIN_10))
         }
 
         holster.update(player)
@@ -175,7 +204,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
     }
 
     override fun render(delta: Float) {
-        if(!initilized) return
+        if(!initialized) return
 
         uiWindowsManager.update()
 
@@ -233,7 +262,6 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
             }
             VEvent.PLAYER_TYPE_SELECTED -> {
                 val t = Utils.json.fromJson(PlayerType::class.java, params)
-                println(".$t")
                 playerType = t
             }
             VEvent.PLAYER_ENEMY_COLLISION -> {
