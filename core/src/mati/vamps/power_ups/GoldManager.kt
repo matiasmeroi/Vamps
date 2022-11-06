@@ -8,7 +8,7 @@ import mati.vamps.utils.Utils
 
 class GoldManager: EventManager.VEventListener, ProfileManager.ProfileListener {
 
-    private var gold = 1000
+    private var gold = 0
     private var tempGold = 0
 
     init {
@@ -51,6 +51,5 @@ class GoldManager: EventManager.VEventListener, ProfileManager.ProfileListener {
             ProfileManager.Event.LOAD -> gold = ProfileManager.getProperty("gold") as Int
             ProfileManager.Event.CLEAR -> ProfileManager.removeProperty("gold")
         }
-        println("Gold: $gold")
     }
 }
