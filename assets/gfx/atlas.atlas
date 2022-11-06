@@ -151,38 +151,45 @@ atlas4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+players/greg
+  rotate: false
+  xy: 1, 23
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 players/health_bar_black
   rotate: false
-  xy: 1, 51
+  xy: 39, 49
   size: 78, 10
   orig: 78, 10
   offset: 0, 0
   index: -1
 players/health_bar_red
   rotate: false
-  xy: 1, 39
+  xy: 39, 37
   size: 78, 10
   orig: 78, 10
   offset: 0, 0
   index: -1
-players/greg
+players/julius
   rotate: false
-  xy: 1, 1
-  size: 36, 36
-  orig: 36, 36
-  offset: 0, 0
-  index: -1
-players/cosmo
-  rotate: false
-  xy: 39, 6
-  size: 27, 31
-  orig: 27, 31
+  xy: 39, 1
+  size: 28, 34
+  orig: 28, 34
   offset: 0, 0
   index: -1
 players/wanda
   rotate: false
-  xy: 81, 29
+  xy: 69, 3
   size: 23, 32
   orig: 23, 32
+  offset: 0, 0
+  index: -1
+players/cosmo
+  rotate: false
+  xy: 94, 4
+  size: 27, 31
+  orig: 27, 31
   offset: 0, 0
   index: -1
