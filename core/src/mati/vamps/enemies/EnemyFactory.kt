@@ -33,6 +33,11 @@ class EnemyFactory : EventManager.VEventListener {
         Gdx.app.log(TAG, "${infoArray.size} enemies loaded")
     }
 
+    fun clear() {
+        enemyMap.clear()
+        enemiesOnScreen.clear()
+    }
+
     fun create(type: EnemyType) : Enemy {
         val enemy = Enemy()
         val info = infoMap.get(type).copy()
