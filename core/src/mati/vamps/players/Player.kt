@@ -18,6 +18,7 @@ import mati.vamps.events.VEvent
 import mati.vamps.power_ups.PowerUps
 import mati.vamps.weapons.WeaponType
 import java.lang.Float.min
+import kotlin.math.sign
 
 class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
 
@@ -103,7 +104,7 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
         if(dx != 0f || dy != 0f) {
             EventManager.announceNot2Enemies(VEvent.PLAYER_MOVED_BY, "${Utils.json.toJson(dx)}$PARAM_SEP${Utils.json.toJson(dy)}")
 
-            dir.set(Math.signum(dx), Math.signum(dy))
+            dir.set(sign(dx), sign(dy))
         }
 
 
