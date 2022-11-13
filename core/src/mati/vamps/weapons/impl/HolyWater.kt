@@ -20,12 +20,15 @@ class HolyWater(factory: ProjectileFactory) : Weapon(factory), SeparationTimer.L
 
         info.appliesKnockback = false
 
+        info.minDmg = 2f
+        info.maxDmg = 10f
+
         info.coolDown = 0.3f
         info.levelUpEffects.put(1, arrayOf(LevelUpEffect.REDUCE_COOLDOWN_20))
         info.levelUpEffects.put(2, arrayOf(LevelUpEffect.INCREASE_AREA_20, LevelUpEffect.ADD_PROJECTILE))
         info.levelUpEffects.put(3, arrayOf(LevelUpEffect.ADD_PROJECTILE))
         info.levelUpEffects.put(4, arrayOf(LevelUpEffect.INCREASE_STRENGTH_30))
-        info.levelUpEffects.put(5, arrayOf(LevelUpEffect.INCREASE_AREA_20))
+        info.levelUpEffects.put(5, arrayOf(LevelUpEffect.INCREASE_AREA_20, LevelUpEffect.INCREASE_BASE_DMG_10))
 
     }
 
