@@ -46,6 +46,10 @@ class WeaponInfo {
                 strength *= 1.2f
             LevelUpEffect.INCREASE_STRENGTH_30 ->
                 strength *= 1.3f
+            LevelUpEffect.INCREASE_BASE_DMG_10 -> {
+                minDmg += 10
+                maxDmg += 10
+            }
             LevelUpEffect.ADD_PROJECTILE ->
                 numProjectiles++
             LevelUpEffect.INCREASE_AREA_10 ->

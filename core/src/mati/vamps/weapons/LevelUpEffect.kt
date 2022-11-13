@@ -5,6 +5,8 @@ enum class LevelUpEffect(val description: String = "Undef") {
     INCREASE_STRENGTH_20("Increase strength by 20%"),
     INCREASE_STRENGTH_30("Increase strength by 30%"),
 
+    INCREASE_BASE_DMG_10("Increase damage by 10"),
+
     ADD_PROJECTILE("Plus one projectile"),
 
     INCREASE_AREA_10("Increase area by 10%"),
