@@ -105,7 +105,9 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         xpHandler = XpHandler(uiStage)
         holster = Holster(projectileFactory)
 
-//        playerType = PlayerType.GREG
+        gameTimer.reset()
+
+        player.reset()
     }
 
     private fun initialize() {
@@ -128,7 +130,6 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         uiStage.addActor(gameTimer)
         uiStage.addActor(statsUI)
 
-        spawner.spawnAround(player.getPosition(), 700f, 30, EnemyType.BAT_MEDIUM)
         initialized = true
     }
 
@@ -295,6 +296,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
 
     override fun onMinutesChange(minutes: Int) {
+
+    }
+
+    override fun onSecondChange(seconds: Int) {
 
     }
 
