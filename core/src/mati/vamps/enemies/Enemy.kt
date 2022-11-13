@@ -27,6 +27,7 @@ class Enemy : Entity(), EventManager.VEventListener{
     private var state = ScreenState.UNINITIALIZED
 
     private var myBehavior : Behavior = FollowPlayer()
+    private var removed = false
 
     override fun initialize(i: Info) {
        super.initialize(i)
@@ -55,6 +56,8 @@ class Enemy : Entity(), EventManager.VEventListener{
     }
 
     private fun checkIfOnScreen() {
+        if(removed) return
+
         var newState = ScreenState.UNINITIALIZED
         if(this.isOnScreen()) {
             newState = ScreenState.ON
@@ -105,6 +108,7 @@ class Enemy : Entity(), EventManager.VEventListener{
     override fun remove(): Boolean {
         val inf = Utils.json.toJson(info)
         EventManager.announceNot2Enemies(VEvent.ENEMY_REMOVED, "$x$PARAM_SEP$y$PARAM_SEP${inf}$PARAM_SEP$entityId")
+        removed = true
         return super.remove()
     }
 
