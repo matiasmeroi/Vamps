@@ -21,6 +21,9 @@
         "num": 4,
         "type": "BAT_MEDIUM"
       }
+    ],
+    "enemyWaves": [
+      "BAT_CROSS_SCREEN"
     ]
   },
 
