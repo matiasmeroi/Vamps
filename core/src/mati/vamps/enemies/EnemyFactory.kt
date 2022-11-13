@@ -56,7 +56,7 @@ class EnemyFactory : EventManager.VEventListener {
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
-            VEvent.ENEMY_KILLED -> {
+            VEvent.ENEMY_REMOVED -> {
                 val p = params.split(PARAM_SEP)
                 val targetId = p[3].toInt()
                 enemiesOnScreen.removeAll { enemy -> enemy.entityId == targetId }
