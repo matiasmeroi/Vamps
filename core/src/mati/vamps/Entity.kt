@@ -38,7 +38,7 @@ abstract class Entity: Actor() {
         }
     }
 
-    protected val velocity = Vector2()
+    protected var velocity : Vector2 = Vector2()
     protected val acceleration = Vector2()
 
     protected var collisionWidth: Float = 0f
@@ -53,6 +53,8 @@ abstract class Entity: Actor() {
 
     open fun initialize(info: Info) {
         this.info = info
+
+        velocity = Vector2()
 
         texture = Vamps.atlas().findRegion(info.textureName)
 
@@ -75,6 +77,10 @@ abstract class Entity: Actor() {
 
     open fun onInitialize() {
 
+    }
+
+    fun velocity() : Vector2 {
+        return velocity
     }
 
     protected fun setCollisionSize(w: Float, h: Float) {
