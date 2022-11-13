@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2
 import mati.vamps.Entity
 import mati.vamps.utils.Utils
 import mati.vamps.Vamps
+import mati.vamps.enemies.behaviors.Behavior
+import mati.vamps.enemies.behaviors.FollowPlayer
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
@@ -20,10 +22,11 @@ class Enemy : Entity(), EventManager.VEventListener{
         const val MOVE_SPEED = 1f
     }
 
-    private var lastPlayerInfo: Vector2 = Vector2(0f, 0f)
     private var mustApplyKnockback = false
 
     private var state = ScreenState.UNINITIALIZED
+
+    private var myBehavior : Behavior = FollowPlayer()
 
     override fun initialize(i: Info) {
        super.initialize(i)
@@ -31,11 +34,17 @@ class Enemy : Entity(), EventManager.VEventListener{
        EventManager.subscribeAsEnemy(this)
     }
 
+    fun setBehavior(behavior: Behavior) : Enemy {
+        myBehavior = behavior
+        return this
+    }
+
     override fun act(delta: Float) {
         super.act(delta)
 
-        velocity.add(acceleration)
+        myBehavior.act(this)
 
+        velocity.add(acceleration)
 
         x += velocity.x
         y += velocity.y
@@ -69,23 +78,12 @@ class Enemy : Entity(), EventManager.VEventListener{
         acceleration.add(dx, dy)
     }
 
+    fun applyingKnockBack() : Boolean {
+        return mustApplyKnockback
+    }
+
     override fun onVEvent(event: VEvent, params: String) {
-        when(event) {
-            VEvent.PLAYER_POSITION -> {
-                val p = params.split(EventManager.PARAM_SEP)
-                val px = Utils.json.fromJson(Float::class.java, p[0])
-                val py = Utils.json.fromJson(Float::class.java, p[1])
-                val angle = MathUtils.atan2(py - y, px - x)
-                if(mustApplyKnockback) {
-                    this.velocity.add(MathUtils.cos(angle) * (info as EnemyInfo).moveSpeed,
-                        MathUtils.sin(angle) * (info as EnemyInfo).moveSpeed)
-                    mustApplyKnockback = false
-                }
-                else this.velocity.set(MathUtils.cos(angle) * (info as EnemyInfo).moveSpeed,
-                    MathUtils.sin(angle) * (info as EnemyInfo).moveSpeed)
-                lastPlayerInfo.set(px, py)
-            }
-        }
+        myBehavior.onEvent(this, event, params)
     }
 
     fun getEnemyInfo() : EnemyInfo {
@@ -97,9 +95,11 @@ class Enemy : Entity(), EventManager.VEventListener{
     }
 
     fun applyKnockback(force: Float) {
-//        val dir = Vector2(x, y).sub(lastPlayerInfo).nor()
-//        velocity.set(dir.x * force, dir.y * force)
         mustApplyKnockback = true;
+    }
+
+    fun stopKnockBack() {
+        mustApplyKnockback = false
     }
 
     fun dealDmg(dmg: Float) {
@@ -117,6 +117,8 @@ class Enemy : Entity(), EventManager.VEventListener{
         super.draw(batch, parentAlpha)
         drawCenteredAndScale(batch, Vamps.atlas().findRegion(info.textureName))
     }
+
+
 
 
 }
