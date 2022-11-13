@@ -2,6 +2,7 @@ package mati.vamps.enemies.spawner
 
 import com.badlogic.gdx.Gdx
 import mati.vamps.enemies.EnemyType
+import mati.vamps.enemies.spawner.waves.Waves
 import mati.vamps.utils.Utils
 import com.badlogic.gdx.utils.Array as GdxArray
 class SpawnerData {
@@ -12,24 +13,33 @@ class SpawnerData {
 
         const val INFO_FILE = "data/spawner_data.json"
 
+        private val wavesMap = HashMap<Int, GdxArray<Waves.Type>>()
         private val minutesMap = HashMap<Int, GdxArray<EnemyType>>()
 
         fun load() {
             val fileString = Gdx.files.internal(INFO_FILE).readString()
-            val loadedArray = Utils.json.fromJson(Array<MinuteProbabilityInfo>::class.java, fileString)
-            for(minProInfo in loadedArray) {
-                minutesMap.put(minProInfo.minute, GdxArray<EnemyType>())
+            val loadedArray = Utils.json.fromJson(Array<MinuteInfo>::class.java, fileString)
+            for(minuteInfo in loadedArray) {
+                minutesMap.put(minuteInfo.minute, GdxArray<EnemyType>())
 
-                for(entry in minProInfo.bag) {
+                for(entry in minuteInfo.bag) {
 
                     val amount = entry.num
                     for(i in 0 until amount) {
-                        minutesMap.get(minProInfo.minute)!!.add(entry.type)
+                        minutesMap.get(minuteInfo.minute)!!.add(entry.type)
                     }
 
                 }
 
-                Gdx.app.log(TAG, "Loaded minute ${minProInfo.minute} for enemy spawner")
+                wavesMap.put(minuteInfo.minute, GdxArray<Waves.Type>())
+                if(minuteInfo.enemyWaves.isNotEmpty()) {
+                    for(wave in minuteInfo.enemyWaves) {
+                        wavesMap[minuteInfo.minute]!!.add(wave)
+                        Gdx.app.log(TAG, "Wave $wave in minute ${minuteInfo.minute}" )
+                    }
+                }
+
+                Gdx.app.log(TAG, "Loaded minute ${minuteInfo.minute} for enemy spawner")
             }
 
         }
@@ -48,6 +58,34 @@ class SpawnerData {
                 if(k > max) max = k
             }
             return max
+        }
+
+        fun mustSpawnWave(seconds: Int, minutes: Int) : Boolean {
+            if(!(minutes in wavesMap.keys)) return false
+
+            val info = wavesMap[minutes]!!
+
+            if(info.isEmpty) return false
+
+
+            val total = info.size
+            if(seconds == 0 && total == 1) return true
+            val timeBetweenWaves = 60 / total
+
+
+            return seconds % timeBetweenWaves == 0
+        }
+
+        fun getWave(seconds: Int, minutes: Int) : Waves.Type {
+            assert(mustSpawnWave(seconds, minutes))
+
+            val info = wavesMap[minutes]!!
+
+            val total = info.size
+            val timeBetweenWaves = 60 / total
+            val current = seconds / timeBetweenWaves
+
+            return info[current]
         }
 
     }
