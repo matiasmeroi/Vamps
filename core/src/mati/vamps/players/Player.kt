@@ -33,8 +33,6 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
     private var healthBarWidth: Int = 0
     private var healthBarHeight: Int = 0
 
-
-
     override fun initialize(i: Info) {
         super.initialize(i)
         i as PlayerInfo
@@ -42,6 +40,10 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
         healthBarWidth = Vamps.atlas().findRegion("players/health_bar_black").regionWidth
         healthBarHeight = Vamps.atlas().findRegion("players/health_bar_black").regionHeight
         EventManager.subscribe(this)
+    }
+
+    fun reset() {
+        health = (info as PlayerInfo).maxHealth
     }
 
     fun getDir() : Vector2 {
@@ -113,10 +115,11 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
     override fun act(delta: Float) {
         super.act(delta)
 
-        if((Gdx.graphics.frameId.toInt() % 20) == 0) {
+        if((Gdx.graphics.frameId.toInt() % 35) == 0) {
             val jx = Utils.json.toJson(x)
             val jy = Utils.json.toJson(y)
             EventManager.announce2Enemies(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
+            EventManager.announceNot2Enemies(VEvent.PLAYER_POSITION, jx+ PARAM_SEP+jy)
         }
 
         if(Gdx.graphics.framesPerSecond != 0 && (Gdx.graphics.frameId.toInt() % Gdx.graphics.framesPerSecond) == 0) {
