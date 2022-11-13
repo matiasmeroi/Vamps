@@ -1,6 +1,7 @@
 package mati.vamps.ui
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.kotcrab.vis.ui.widget.VisLabel
@@ -10,6 +11,7 @@ class GameTimer: VisLabel() {
 
     interface Listener {
         fun onMinutesChange(minutes: Int)
+        fun onSecondChange(seconds: Int)
     }
 
     private var seconds = 0f
@@ -32,12 +34,26 @@ class GameTimer: VisLabel() {
         listeners.add(l)
     }
 
+    fun reset() {
+        seconds = 0f
+
+        minDec = 0
+        minUnit = 0
+
+        secDec = 0
+        secUnit = 0
+    }
+
     override fun act(delta: Float) {
         super.act(delta)
 
         this.setPosition(stage.viewport.worldWidth / 2f - 45, stage.viewport.worldHeight - 100f)
 
+        val lastSeconds = MathUtils.floor(seconds)
         seconds += Gdx.graphics.deltaTime
+        if(lastSeconds != MathUtils.floor(seconds)) {
+            for(l in listeners) l.onSecondChange(getSeconds())
+        }
 
         val lastMinUnit = minUnit
 
