@@ -102,6 +102,12 @@ class Enemy : Entity(), EventManager.VEventListener{
         mustApplyKnockback = false
     }
 
+    override fun remove(): Boolean {
+        val inf = Utils.json.toJson(info)
+        EventManager.announceNot2Enemies(VEvent.ENEMY_REMOVED, "$x$PARAM_SEP$y$PARAM_SEP${inf}$PARAM_SEP$entityId")
+        return super.remove()
+    }
+
     fun dealDmg(dmg: Float) {
         (info as EnemyInfo).health -= dmg
         if((info as EnemyInfo).health <= 0) {
