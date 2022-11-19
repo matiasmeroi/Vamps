@@ -106,6 +106,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         holster = Holster(projectileFactory)
 
         gameTimer.reset()
+        spawner.reset()
 
         player.reset()
     }
