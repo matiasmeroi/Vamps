@@ -29,6 +29,13 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
 
     private val waves = Waves()
 
+    fun reset() {
+        currentSeconds = 0
+        currentMinute = 0
+
+        waveCooldown = 0
+    }
+
     fun update(playerPosition: Vector2) {
         spawnRandomEnemies(playerPosition)
         spawnWaves(playerPosition)
