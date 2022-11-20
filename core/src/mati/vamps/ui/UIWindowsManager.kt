@@ -2,11 +2,9 @@ package mati.vamps.ui
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.JsonValue.PrettyPrintSettings
 import com.kotcrab.vis.ui.widget.VisWindow
-import mati.vamps.PlayerUpgradeInfo
-import mati.vamps.Upgrade
-import mati.vamps.WeaponUpgradeInfo
-import mati.vamps.generateUpgrades
+import mati.vamps.*
 import mati.vamps.players.PlayerFactory
 import mati.vamps.utils.Utils
 import mati.vamps.weapons.Holster
@@ -19,10 +17,12 @@ class UIWindowsManager(val stage: Stage) {
     }
 
     val upgradeSelectionUI = GenericListSelector<Upgrade>("Select Upgrade")
-    private val allWindows = arrayOf(upgradeSelectionUI)
+    val presentUI = GenericListSelector<Upgrade>("Present")
+    private val allWindows = arrayOf(upgradeSelectionUI, presentUI)
 
     fun initialize() {
         stage.addActor(upgradeSelectionUI)
+        stage.addActor(presentUI)
     }
 
     fun update() {
@@ -35,12 +35,6 @@ class UIWindowsManager(val stage: Stage) {
     }
 
     fun showUpgradeWindow(currentLevel: Int, holster: Holster) : Boolean {
-//        val upgradesAvailable = holster.getWeaponUpgradesAvailable()
-//
-//        for(playerUpgrade in PlayerFactory.getUpgradesAvailable()) {
-//            upgradesAvailable.add(playerUpgrade)
-//        }
-
         val upgradesAvailable = generateUpgrades(currentLevel, holster)
 
         if(upgradesAvailable.size == 0) return false
@@ -64,6 +58,27 @@ class UIWindowsManager(val stage: Stage) {
         upgradeSelectionUI.isVisible = true
 
         centerWindow(upgradeSelectionUI)
+        return true
+    }
+
+    fun showPresentWindow(holster: Holster) : Boolean {
+        val options = generatePresents(holster)
+
+        if(options.isEmpty) return false
+
+        val givenOptions = GdxArray<GenericListSelector.Option<Upgrade>>()
+
+        for(option  in options) {
+            val opt = GenericListSelector.Option(option.description, option)
+            givenOptions.add(opt)
+        }
+
+        presentUI.setOptions(givenOptions)
+        presentUI.setInputHandler(RandomListElementInputHandler())
+        presentUI.isVisible = true
+
+        centerWindow(presentUI)
+
         return true
     }
 
