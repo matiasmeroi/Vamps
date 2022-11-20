@@ -1,7 +1,5 @@
 package mati.vamps.ui
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.kotcrab.vis.ui.widget.VisWindow
 import com.badlogic.gdx.utils.ObjectMap
 import com.kotcrab.vis.ui.widget.VisList
@@ -13,6 +11,7 @@ class GenericListSelector<T>(t: String = "", val closable: Boolean = false) : Vi
         fun onOptionSelected(option: T)
     }
 
+    private var inputHandler : UIInputHandler = KeyboardInputHandler()
     private val text2options = ObjectMap<String, T>()
 
     data class Option<T>(val text: String, val value: T)
@@ -28,21 +27,27 @@ class GenericListSelector<T>(t: String = "", val closable: Boolean = false) : Vi
         this.add(list)
     }
 
+    fun setInputHandler(handler: UIInputHandler) {
+        this.inputHandler = handler
+    }
+
     override fun update() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) list.selectedIndex = (list.selectedIndex+1) % list.items.size
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        inputHandler.poll()
+
+        if(inputHandler.down()) list.selectedIndex = (list.selectedIndex+1) % list.items.size
+        if(inputHandler.up()) {
             list.selectedIndex =
                 if(list.selectedIndex > 0 )
                     (list.selectedIndex - 1) % list.items.size
                 else list.items.size - 1
 
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if(inputHandler.enter()) {
             this.isVisible = false
             if(text2options.size > 0) listener.onOptionSelected(text2options.get(list.selected))
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && closable) {
+        if(inputHandler.escape() && closable) {
             isVisible = false
         }
     }
