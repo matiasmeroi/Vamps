@@ -12,7 +12,7 @@ enum class VEvent  {
     ENEMY_REMOVED, // x, y, info, entityId
     ENEMY_HIT // x, y, dmg
     ,
-    ITEM_EFFECT_ACTIVATED,
+    ITEM_EFFECT_ACTIVATED, // effect
 
     NEXT_LEVEL,
     ENEMY_ON_SCREEN,
