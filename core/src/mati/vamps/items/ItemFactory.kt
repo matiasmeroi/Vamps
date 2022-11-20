@@ -8,6 +8,7 @@ import mati.vamps.enemies.EnemyFactory
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.utils.ProbabilityBag
 import com.badlogic.gdx.utils.Array as GdxArray
 
 class ItemFactory(val stage: Stage) : EventManager.VEventListener {
@@ -38,12 +39,44 @@ class ItemFactory(val stage: Stage) : EventManager.VEventListener {
 
     private fun getOnKillItem(): Item {
         val r = Utils.r.nextInt(10000)
-        val item = Item()
-        if(r < 1000) item.initialize(infoMap.get(Item.Type.COIN).copy())
-        else item.initialize(infoMap.get(Item.Type.DIAMOND_BLUE_10).copy())
+        val item =
+            if(r <= 10) {
+                getSpecialItem()
+            }
+            else if(r <= 1000) {
+                getCoin()
+            }
+            else {
+                Item().apply { initialize(infoMap.get(Item.Type.DIAMOND_BLUE_10).copy()) }
+            }
         return item
     }
 
+    private fun getSpecialItem() : Item {
+        val pb = ProbabilityBag<Item.Type>()
+        pb.add(Item.Type.CHICKEN, 30)
+        pb.add(Item.Type.UNHOLY_CROSS, 2)
+        pb.add(Item.Type.PRESENT, 4)
+        val item = Item()
+        item.initialize(infoMap.get(pb.get()).copy())
+        return item
+    }
+
+    private fun getCoin(): Item {
+        val item = Item()
+        if(Utils.r.nextInt(10) <= 2) item.initialize(infoMap.get(Item.Type.COIN_BAG).copy())
+        else item.initialize(infoMap.get(Item.Type.COIN).copy())
+        return item
+    }
+
+    private fun getFireItem(): Item {
+        val pb = ProbabilityBag<Item.Type>()
+        pb.add(Item.Type.COIN, 100)
+        pb.add(Item.Type.CHICKEN, 60)
+        pb.add(Item.Type.COIN_BAG, 10)
+        pb.add(Item.Type.PRESENT, 1)
+        return Item().apply { initialize(infoMap.get(pb.get()).copy()) }
+    }
 
     override fun onVEvent(event: VEvent, params: String) {
         when(event) {
@@ -57,6 +90,15 @@ class ItemFactory(val stage: Stage) : EventManager.VEventListener {
                     stage.addActor(item)
                     itemList.add(item)
                 }
+            }
+            VEvent.FIRE_KILLED -> {
+                val p = params.split(PARAM_SEP)
+                val x = Utils.json.fromJson(Float::class.java, p[0])
+                val y = Utils.json.fromJson(Float::class.java, p[1])
+                val item = getFireItem()
+                item.setPosition(x, y)
+                stage.addActor(item)
+                itemList.add(item)
             }
         }
     }
