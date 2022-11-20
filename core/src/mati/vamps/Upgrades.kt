@@ -23,3 +23,12 @@ fun generateUpgrades(currentLevel: Int, holster: Holster) :  GdxArray<Upgrade> {
         return holster.getWeaponUpgradesAvailable()
     }
 }
+
+fun generatePresents(holster: Holster) : GdxArray<Upgrade> {
+    val player = PlayerFactory.getUpgradesAvailable()
+    val holsterUpgrades = holster.getWeaponUpgradesAvailable(true)
+    val result = GdxArray<Upgrade>()
+    result.addAll(player)
+    result.addAll(holsterUpgrades)
+    return result
+}
