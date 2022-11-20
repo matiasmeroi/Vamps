@@ -5,6 +5,7 @@ import mati.vamps.utils.Utils
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.items.ItemEffect
 import com.badlogic.gdx.utils.ObjectMap as GdxMap
 import com.badlogic.gdx.utils.Array as GdxArray
 
@@ -72,6 +73,16 @@ class EnemyFactory : EventManager.VEventListener {
                 val id = params.toInt()
                 enemiesOnScreen.add(enemyMap.get(id))
             }
+            VEvent.ITEM_EFFECT_ACTIVATED -> {
+                val effect = Utils.json.fromJson(ItemEffect::class.java, params)
+                if(effect == ItemEffect.KILL_ONSCREEN_ENEMIES) killOnScreenEnemies()
+            }
+        }
+    }
+
+    private fun killOnScreenEnemies() {
+        for(enemy in enemiesOnScreen) {
+            enemy.remove()
         }
     }
 }
