@@ -1,6 +1,7 @@
 package mati.vamps.enemies
 
 import mati.vamps.Entity
+import mati.vamps.events.VEvent
 
 data class EnemyInfo (
         var health: Float = 1f,
@@ -8,7 +9,7 @@ data class EnemyInfo (
         var dmgPerFrame: Float = 0.1f,
         var knockback: Float = 1f,
         var type: EnemyType = EnemyType.NONE,
-
+        var onKillEvent: VEvent = VEvent.NONE,
 
 
         var texture: String = DEFAULT_TEXT,
