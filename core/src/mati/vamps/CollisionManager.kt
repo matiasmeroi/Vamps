@@ -32,6 +32,8 @@ class CollisionManager {
            v.set(player.x, player.y)
            v.sub(enemy.getPosition())
 
+           if(enemy.getDmgPerFrame() == 0f) continue
+
            if(player.getColRect().overlaps(enemy.getColRect())) {
                enemy.stop()
                EventManager.announceNot2Enemies(VEvent.PLAYER_ENEMY_COLLISION, Utils.json.toJson(enemy.getDmgPerFrame()))
@@ -96,7 +98,8 @@ class CollisionManager {
                         pr.timeOutEntity(enemy)
 
                         if(enemy.isDead()) {
-                            EventManager.announceNot2Enemies(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(enemy.getEnemyInfo())+ PARAM_SEP +j.toJson(enemy.entityId))
+                            if(!enemy.hasOnKillEvent())
+                                EventManager.announceNot2Enemies(VEvent.ENEMY_KILLED, j.toJson(enemy.x) + PARAM_SEP + j.toJson(enemy.y) + PARAM_SEP + j.toJson(enemy.getEnemyInfo())+ PARAM_SEP +j.toJson(enemy.entityId))
                             enemyIter.remove()
                         }
 
