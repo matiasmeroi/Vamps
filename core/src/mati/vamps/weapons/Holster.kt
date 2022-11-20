@@ -41,7 +41,7 @@ class Holster(val projectileFactory: ProjectileFactory) {
         return result
     }
 
-    fun getWeaponUpgradesAvailable() : Array<Upgrade> {
+    fun getWeaponUpgradesAvailable(onlyOwned : Boolean = false) : Array<Upgrade> {
         val res = Array<Upgrade>()
 
         val ownedTypes = Array<WeaponType>()
@@ -52,6 +52,8 @@ class Holster(val projectileFactory: ProjectileFactory) {
                 res.add(WeaponUpgradeInfo(w.getType(), WeaponUpgradeType.LEVEL_UP_WEAPON,
                     "Level up ${w.getName()}: ${w.getNextLevelDescription()}"))
         }
+
+        if(onlyOwned) return res
 
         for(t in WeaponType.values()) {
             if(t != WeaponType.NONE && !(t in ownedTypes)) {
