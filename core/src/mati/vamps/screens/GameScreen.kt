@@ -122,6 +122,7 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
 
         uiWindowsManager.initialize()
         uiWindowsManager.upgradeSelectionUI.listener = this
+        uiWindowsManager.presentUI.listener = this
 
         statsUI.initialize(killCounter, holster)
 
@@ -290,6 +291,10 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
             VEvent.GAME_END -> {
                 EventManager.announceNot2Enemies(VEvent.ROUND_TIME, "${gameTimer.getMinutes()}" + PARAM_SEP + "${gameTimer.getSeconds()}")
                 EventManager.announceNot2Enemies(VEvent.ROUND_KILLS, "${killCounter.getCount()}")
+            }
+            VEvent.ITEM_EFFECT_ACTIVATED -> {
+                val effect = j.fromJson(ItemEffect::class.java, params)
+                if(effect == ItemEffect.OPEN_PRESENT) uiWindowsManager.showPresentWindow(holster)
             }
 
         }
