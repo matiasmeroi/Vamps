@@ -15,6 +15,7 @@ import mati.vamps.Vamps
 import mati.vamps.events.EventManager
 import mati.vamps.events.EventManager.PARAM_SEP
 import mati.vamps.events.VEvent
+import mati.vamps.items.ItemEffect
 import mati.vamps.power_ups.PowerUps
 import mati.vamps.weapons.WeaponType
 import java.lang.Float.min
@@ -159,6 +160,14 @@ class Player(val _stage: Stage) : Entity(), EventManager.VEventListener {
             VEvent.POWER_UP_ACTIVATED -> {
                 val pu = Utils.json.fromJson(PowerUps.PowerUp::class.java, params)
                 pu.applyFun(this.info as PlayerInfo)
+                health = (this.info as PlayerInfo).maxHealth
+            }
+            VEvent.ITEM_EFFECT_ACTIVATED -> {
+                val effect = Utils.json.fromJson(ItemEffect::class.java, params)
+                when(effect) {
+                    ItemEffect.HEALTH_UP_30 -> addHealth(30f)
+                    ItemEffect.HEALTH_MAX -> addHealth(3000f)
+                }
             }
         }
     }
