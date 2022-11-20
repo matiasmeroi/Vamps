@@ -1,8 +1,7 @@
 package mati.vamps.enemies
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
+
 import mati.vamps.Entity
 import mati.vamps.utils.Utils
 import mati.vamps.Vamps
@@ -93,6 +92,10 @@ class Enemy : Entity(), EventManager.VEventListener{
         return info as EnemyInfo
     }
 
+    fun hasOnKillEvent() : Boolean {
+        return getEnemyInfo().onKillEvent != VEvent.NONE
+    }
+
     fun getDmgPerFrame() : Float {
         return (info as EnemyInfo).dmgPerFrame
     }
@@ -115,6 +118,7 @@ class Enemy : Entity(), EventManager.VEventListener{
     fun dealDmg(dmg: Float) {
         (info as EnemyInfo).health -= dmg
         if((info as EnemyInfo).health <= 0) {
+            EventManager.announceNot2Enemies((info as EnemyInfo).onKillEvent, "$x$PARAM_SEP$y$PARAM_SEP${Utils.json.toJson(info)}")
             remove()
         }
     }
