@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import mati.vamps.enemies.Enemy
 import mati.vamps.enemies.EnemyFactory
 import mati.vamps.enemies.EnemyType
+import mati.vamps.enemies.behaviors.DoNothing
 import mati.vamps.enemies.spawner.waves.Waves
 import mati.vamps.utils.Utils
 import mati.vamps.ui.GameTimer
@@ -39,6 +40,7 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
     fun update(playerPosition: Vector2) {
         spawnRandomEnemies(playerPosition)
         spawnWaves(playerPosition)
+        spawnFires(playerPosition)
     }
 
     private fun spawnRandomEnemies(playerPosition: Vector2) {
@@ -62,6 +64,19 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
             waveCooldown = 120
         }
 
+    }
+
+    private fun spawnFires(playerPosition: Vector2) {
+        val r = Utils.r.nextInt(1000)
+        if(r == 1) {
+            Gdx.app.log(TAG, "Spawning fire")
+            val fire = factory.create(EnemyType.FIRE)
+            val pos = Utils.getOffscreenPosForDirection(Utils.getRandomDirection(),
+                playerPosition, stage.viewport.worldWidth, stage.viewport.worldHeight)
+            fire.setBehavior(DoNothing())
+            fire.setPosition(pos.x, pos.y)
+            stage.addActor(fire)
+        }
     }
 
     private fun setPositionOffScreen(pp: Vector2, enemy: Enemy) {
