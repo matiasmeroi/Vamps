@@ -16,5 +16,41 @@
     "h": 20,
     "cw": 16,
     "ch": 20
+  },
+  {
+    "type": "COIN_BAG",
+    "effect": "COIN_10",
+    "texture": "items/coin_bag",
+    "w": 16,
+    "h": 20,
+    "cw": 16,
+    "ch": 20
+  },
+  {
+    "type": "CHICKEN",
+    "effect": "HEALTH_UP_30",
+    "texture": "items/chicken",
+    "w": 32,
+    "h": 32,
+    "cw": 32,
+    "ch": 32
+  },
+  {
+    "type": "PRESENT",
+    "effect": "OPEN_PRESENT",
+    "texture": "items/present",
+    "w": 28,
+    "h": 20,
+    "cw": 28,
+    "ch": 20
+  },
+  {
+    "type": "UNHOLY_CROSS",
+    "effect": "KILL_ONSCREEN_ENEMIES",
+    "texture": "items/unholy_cross",
+    "w": 20,
+    "h": 24,
+    "cw": 20,
+    "ch": 24
   }
 ]
