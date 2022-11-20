@@ -2,6 +2,8 @@ package mati.vamps.events
 
 enum class VEvent  {
 
+    NONE,
+
     PLAYER_TYPE_SELECTED,
 
     PLAYER_POSITION,
@@ -10,8 +12,8 @@ enum class VEvent  {
 
     ENEMY_KILLED, // x, y, info, entityid
     ENEMY_REMOVED, // x, y, info, entityId
-    ENEMY_HIT // x, y, dmg
-    ,
+    ENEMY_HIT, // x, y, dmg
+
     ITEM_EFFECT_ACTIVATED, // effect
 
     NEXT_LEVEL,
@@ -27,6 +29,10 @@ enum class VEvent  {
 
     POWER_UP_ACTIVATED,
     ROUND_TIME,
-    ROUND_KILLS
+    ROUND_KILLS,
+
+    // enemies' onKillEvent -- x, y, info
+    FIRE_KILLED
+
 
 }
