@@ -1,5 +1,12 @@
 [
   {
+    "type": "FIRE",
+    "texture": "enemies/fire",
+    "health": 15,
+    "dmgPerFrame": 0.0,
+    "onKillEvent": "FIRE_KILLED"
+  },
+  {
     "type": "BAT_MEDIUM",
     "texture": "enemies/bat",
     "health": 1,
