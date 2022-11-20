@@ -15,11 +15,11 @@ object EventManager {
     private val enemyBuffer = EventQueue()
 
     fun announceNot2Enemies(event: VEvent, params: String) {
-        notEnemyBuffer.addMsg(event, params)
+        if(event != VEvent.NONE) notEnemyBuffer.addMsg(event, params)
     }
 
     fun announce2Enemies(event: VEvent, params: String) {
-        enemyBuffer.addMsg(event, params)
+        if(event != VEvent.NONE) enemyBuffer.addMsg(event, params)
     }
 
     fun announceAll(event: VEvent, params: String) {
