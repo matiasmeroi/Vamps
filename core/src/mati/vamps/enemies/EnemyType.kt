@@ -6,5 +6,6 @@ enum class EnemyType {
     BAT_SMALL,
     BAT_MEDIUM,
     SKELETON,
-    ZOMBIE
+    ZOMBIE,
+    PLANT
 }
