@@ -26,5 +26,11 @@
     "texture": "enemies/zombie1",
     "health": 20,
     "dmgPerFrame": 0.6
+  },
+  {
+    "type": "PLANT",
+    "texture": "enemies/plant",
+    "health": 100,
+    "dmgPerFrame": 0.2
   }
 ]
