@@ -41,6 +41,9 @@
         "num": 3,
         "type": "BAT_MEDIUM"
       }
+    ],
+    "enemyWaves": [
+      "PLANT_CIRCLE"
     ]
   },
 
