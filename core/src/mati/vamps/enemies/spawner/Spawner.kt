@@ -9,17 +9,21 @@ import mati.vamps.enemies.EnemyFactory
 import mati.vamps.enemies.EnemyType
 import mati.vamps.enemies.behaviors.DoNothing
 import mati.vamps.enemies.spawner.waves.Waves
+import mati.vamps.events.EventManager
+import mati.vamps.events.VEvent
 import mati.vamps.utils.Utils
 import mati.vamps.ui.GameTimer
 import java.lang.Math.max
 
-class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, val stage: Stage): GameTimer.Listener {
+class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, val stage: Stage): GameTimer.Listener,
+    EventManager.VEventListener {
     
     companion object {
         val TAG = Spawner::class.java.getSimpleName()
     }
 
     init {
+        EventManager.subscribe(this)
         timer.addListener(this)
     }
 
@@ -109,6 +113,14 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
 
     override fun onSecondChange(seconds: Int) {
         currentSeconds = seconds
+    }
+
+    override fun onVEvent(event: VEvent, params: String) {
+        when(event) {
+            VEvent.GAME_START -> {
+                spawnAround(Vector2(0f, 0f), 700f, 10)
+            }
+        }
     }
 
 }
