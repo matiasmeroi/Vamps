@@ -11,13 +11,14 @@ class Waves {
     , val worldWidth: Float, val worldHeight: Float) : Actor()
 
     enum class Type {
-        BAT_CROSS_SCREEN
+        BAT_CROSS_SCREEN, PLANT_CIRCLE
     }
 
     fun getWaveFromType(t: Type, playerPosition: Vector2, enemyFactory: EnemyFactory,
                 worldWidth: Float, worldHeight: Float) : EnemyWave {
         return when(t) {
             Type.BAT_CROSS_SCREEN -> BatCrossScreenWave(playerPosition, enemyFactory, worldWidth, worldHeight)
+            Type.PLANT_CIRCLE -> PlantCircle(playerPosition, enemyFactory, worldWidth, worldHeight)
         }
     }
 
