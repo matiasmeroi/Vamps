@@ -5,28 +5,35 @@ filter: Nearest,Nearest
 repeat: none
 enemies/skeleton1
   rotate: false
-  xy: 1, 27
+  xy: 1, 29
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 enemies/zombie1
   rotate: false
-  xy: 33, 27
+  xy: 33, 29
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 enemies/fire
   rotate: false
-  xy: 65, 27
+  xy: 65, 29
   size: 21, 31
   orig: 21, 31
   offset: 0, 0
   index: -1
-enemies/bat
+enemies/plant
   rotate: false
   xy: 1, 1
+  size: 23, 26
+  orig: 23, 26
+  offset: 0, 0
+  index: -1
+enemies/bat
+  rotate: false
+  xy: 88, 36
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
