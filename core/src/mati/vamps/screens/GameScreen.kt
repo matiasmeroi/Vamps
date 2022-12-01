@@ -178,12 +178,13 @@ class GameScreen : Screen, EventManager.VEventListener, GameTimer.Listener,
         collisionManager.run(player, enemyFactory.getList(), itemFactory.getList(), holster)
         xpHandler.update()
 
-        spawner.update(player.getPosition())
-
         mainStage.act(Gdx.graphics.deltaTime)
         map.update()
         uiStage.act(Gdx.graphics.deltaTime)
 
+        // actualizar último así se reciben los eventos enemy_killed
+        // y se actualiza el spawn rate antes de update()
+        spawner.update(player.getPosition())
     }
 
     private fun debugDraw() {
