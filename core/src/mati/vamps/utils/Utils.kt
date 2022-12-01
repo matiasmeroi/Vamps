@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Json
 import java.lang.Float.max
 import java.util.*
-import kotlin.math.sign
+import com.badlogic.gdx.utils.Array as GdxArray
 
 object Utils {
     
@@ -58,6 +58,16 @@ object Utils {
         res.y -= dir.y * yoff
         
         return res
+    }
+
+    fun calcAvg(list: GdxArray<Int>) : Float {
+        if(list.isEmpty) return 0f
+
+        var accum = 0
+        var total = list.size
+        for(i in list) accum += i
+
+        return accum / total.toFloat()
     }
 
 
