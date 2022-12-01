@@ -14,18 +14,27 @@ import mati.vamps.events.VEvent
 import mati.vamps.utils.Utils
 import mati.vamps.ui.GameTimer
 import java.lang.Math.max
+import java.lang.Math.min
+import com.badlogic.gdx.utils.Array as GdxArray
 
 class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, val stage: Stage): GameTimer.Listener,
     EventManager.VEventListener {
     
     companion object {
         val TAG = Spawner::class.java.getSimpleName()
+        const val MIN_SPAWN_DELAY = 40
+        const val DEATH_TO_SPAWN_DELAY_OFFSET = 0
     }
 
     init {
         EventManager.subscribe(this)
         timer.addListener(this)
     }
+
+    private val deathFrameDelays = GdxArray<Int>()
+    private var enemyKilledThisFrame = false
+    private var framesWithoutEnemiesDeaths = 0
+    private var spawnEnemiesEveryXFrames = MIN_SPAWN_DELAY
 
     private var currentSeconds = 0
     private var currentMinute = 0
@@ -39,20 +48,59 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
         currentMinute = 0
 
         waveCooldown = 0
+
+        spawnEnemiesEveryXFrames = MIN_SPAWN_DELAY
+        framesWithoutEnemiesDeaths = 0
+        enemyKilledThisFrame = false
+        deathFrameDelays.clear()
     }
 
     fun update(playerPosition: Vector2) {
         spawnRandomEnemies(playerPosition)
         spawnWaves(playerPosition)
         spawnFires(playerPosition)
+
+        if(enemyKilledThisFrame) {
+            framesWithoutEnemiesDeaths = 0
+            enemyKilledThisFrame = false
+        } else {
+            framesWithoutEnemiesDeaths++
+            if(framesWithoutEnemiesDeaths >= MIN_SPAWN_DELAY) {
+                deathFrameDelays.add(MIN_SPAWN_DELAY)
+                framesWithoutEnemiesDeaths = 0
+                println("I")
+            }
+        }
     }
 
     private fun spawnRandomEnemies(playerPosition: Vector2) {
-        if((Gdx.graphics.frameId % 35).toInt() == 0 ) {
+        calcSpawnRate()
+
+        Gdx.app.log(TAG, "$spawnEnemiesEveryXFrames")
+        if((Gdx.graphics.frameId % spawnEnemiesEveryXFrames).toInt() == 0 ) {
             val e = factory.create(SpawnerData.getRandomEnemyTypeForMinute(currentMinute))
             stage.addActor(e)
             setPositionOffScreen(playerPosition, e)
         }
+
+        capDeathList()
+    }
+
+    private fun calcSpawnRate() {
+        val deathEveryXFrames = Utils.calcAvg(deathFrameDelays)
+        val dexf = max(deathEveryXFrames.toInt() - DEATH_TO_SPAWN_DELAY_OFFSET, DEATH_TO_SPAWN_DELAY_OFFSET + 1)
+        spawnEnemiesEveryXFrames = min(MIN_SPAWN_DELAY, dexf)
+    }
+
+    private fun capDeathList() {
+        if(deathFrameDelays.size > 100) {
+            deathFrameDelays.removeRange(0, 30)
+        }
+    }
+
+    private fun onEnemyKilled() {
+        deathFrameDelays.add(min(framesWithoutEnemiesDeaths, MIN_SPAWN_DELAY))
+        enemyKilledThisFrame = true
     }
 
     private fun spawnWaves(playerPosition: Vector2) {
@@ -119,6 +167,9 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
         when(event) {
             VEvent.GAME_START -> {
                 spawnAround(Vector2(0f, 0f), 700f, 10)
+            }
+            VEvent.ENEMY_KILLED -> {
+                onEnemyKilled()
             }
         }
     }
