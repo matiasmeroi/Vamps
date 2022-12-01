@@ -11,8 +11,8 @@ import com.badlogic.gdx.utils.Array as GdxArray
 class PlantCircle(pp: Vector2, fact: EnemyFactory, ww: Float, wh: Float) : Waves.EnemyWave(pp, fact, ww, wh) {
 
     companion object {
-        const val NUM_ENEMIES = 70
-        const val RADIUS = 800
+        const val NUM_ENEMIES = 90
+        const val RADIUS = 1000
         const val ENEMY_SPEED = 0.1F
         const val ALIVE_TIME = 1900
     }
@@ -40,7 +40,7 @@ class PlantCircle(pp: Vector2, fact: EnemyFactory, ww: Float, wh: Float) : Waves
         val dAngle = MathUtils.PI2 / NUM_ENEMIES.toFloat()
         for(i in 0 until NUM_ENEMIES) {
             val enemy = factory.create(EnemyType.PLANT)
-            enemy.setPosition(MathUtils.cos(angle) * RADIUS, MathUtils.sin(angle) * RADIUS)
+            enemy.setPosition(MathUtils.cos(angle) * RADIUS + playerPosition.x, MathUtils.sin(angle) * RADIUS + playerPosition.y)
             enemy.setBehavior(GotoPosition(playerPosition, ENEMY_SPEED))
             stage.addActor(enemy)
             enemyList.add(enemy)
