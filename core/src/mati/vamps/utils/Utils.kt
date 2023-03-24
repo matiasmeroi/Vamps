@@ -1,6 +1,7 @@
 package mati.vamps.utils
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Json
 import java.lang.Float.max
@@ -68,6 +69,10 @@ object Utils {
         for(i in list) accum += i
 
         return accum / total.toFloat()
+    }
+
+    fun getRandomAngleRad() : Float {
+        return MathUtils.map(0f, 1f, 0f, MathUtils.PI2, r.nextFloat())
     }
 
 

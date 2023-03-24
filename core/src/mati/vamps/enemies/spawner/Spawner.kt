@@ -76,14 +76,37 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
     private fun spawnRandomEnemies(playerPosition: Vector2) {
         calcSpawnRate()
 
-        Gdx.app.log(TAG, "$spawnEnemiesEveryXFrames")
+        // Gdx.app.log(TAG, "$spawnEnemiesEveryXFrames")
         if((Gdx.graphics.frameId % spawnEnemiesEveryXFrames).toInt() == 0 ) {
-            val e = factory.create(SpawnerData.getRandomEnemyTypeForMinute(currentMinute))
-            stage.addActor(e)
-            setPositionOffScreen(playerPosition, e)
+            if(Gdx.graphics.frameId.toInt() % 10 == 0)
+                spawnMiniHorde(playerPosition)
+            else
+                spawnSingleEnemy(playerPosition)
+
         }
 
         capDeathList()
+    }
+
+    private fun spawnSingleEnemy(playerPosition: Vector2) {
+        val e = factory.create(SpawnerData.getRandomEnemyTypeForMinute(currentMinute))
+        stage.addActor(e)
+        setPositionOffScreen(playerPosition, e)
+    }
+
+    private fun spawnMiniHorde(playerPosition: Vector2) {
+        val radius = 200f
+        val centerPos = getPostionOffScreen(playerPosition, radius)
+        val numEnemies = Utils.r.nextInt(5) + 5
+        val enemyType = SpawnerData.getRandomEnemyTypeForMinute(currentMinute)
+        for(i in 0 until numEnemies) {
+            val ang = Utils.getRandomAngleRad()
+            val r = Utils.r.nextFloat() * radius
+            val pos = Vector2(MathUtils.cos(ang) * r, MathUtils.sin(ang) * r).add(centerPos)
+            val enemy = factory.create(enemyType)
+            enemy.setPosition(pos.x, pos.y)
+            stage.addActor(enemy)
+        }
     }
 
     private fun calcSpawnRate() {
@@ -132,10 +155,16 @@ class Spawner(private val timer: GameTimer, private val factory: EnemyFactory, v
     }
 
     private fun setPositionOffScreen(pp: Vector2, enemy: Enemy) {
-        val rads = MathUtils.map(0f, 1f, 0f, MathUtils.PI2, Utils.r.nextFloat())
+        val rads = Utils.getRandomAngleRad()
         val radius = max(stage.viewport.worldWidth, stage.viewport.worldHeight)
         val pos = Vector2(MathUtils.cos(rads) *radius ,MathUtils.sin(rads) *radius).add(pp)
         enemy.setPosition(pos.x, pos.y)
+    }
+
+    private fun getPostionOffScreen(playerPosition: Vector2, offset: Float) : Vector2 {
+        val rads = Utils.getRandomAngleRad()
+        val radius = max(stage.viewport.worldWidth, stage.viewport.worldHeight) + offset
+        return Vector2(MathUtils.cos(rads) * radius, MathUtils.sin(rads) * radius).add(playerPosition)
     }
 
     fun spawnAround(playerPos:Vector2, radius: Float, num: Int, enemyType: EnemyType? = null) {
